@@ -1,0 +1,27 @@
+# Dépendances
+node_modules/
+
+# Build Next.js
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Secrets et configuration locale
+.env
+.env.*
+!.env.example
+
+# Fichiers téléversés et sauvegardes (données de production, jamais versionnées)
+storage/
+backups/
+
+# Résultats de tests et captures locales
+test-results/
+coverage/
+screenshots/
+
+# Divers
+.DS_Store
+npm-debug.log*
+*.log
