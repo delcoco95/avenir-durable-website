@@ -1783,9 +1783,7 @@ p {
     grid-template-columns: 1fr;
   }
   .rings-visual__caption {
-    position: static;
-    margin-top: var(--space-4);
-    max-width: none;
+    display: none;
   }
 }
 

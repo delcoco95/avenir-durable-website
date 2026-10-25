@@ -45,7 +45,7 @@ export async function ProjectView({ project: p }: { project: typeof schema.proje
       </header>
       <div className="wrap section--tight" style={{ paddingTop: 0 }}>
         {cover && (
-          <figure className="detail-cover" style={{ marginInline: 0 }}>
+          <figure className="detail-cover" style={{ marginInline: 0, maxWidth: cover.width }}>
             <Picture media={cover} sizes="(max-width: 1200px) 94vw, 1180px" priority />
           </figure>
         )}

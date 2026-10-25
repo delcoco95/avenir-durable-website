@@ -330,7 +330,7 @@ async function main() {
           type: "values",
           eyebrow: "Ce qui nous guide",
           title: "Nos valeurs",
-          intro: "Des principes de travail à valider avec l'association.",
+          intro: "",
           items: [
             { title: "Le concret", text: "Partir de situations réelles et de gestes applicables tout de suite." },
             { title: "L'accessibilité", text: "S'adresser à tous, sans prérequis ni jargon." },
