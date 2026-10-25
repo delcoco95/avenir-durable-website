@@ -1,0 +1,47 @@
+// Génère www/accueil.html (page d'accueil) à partir de content/site.json (même code que le bouton « Publier » de l'administration).
+const fs = require('fs');
+const { fullDocument, legalDocument, normalize } = require('./www/assets/render.js');
+const data = JSON.parse(fs.readFileSync(__dirname + '/www/content/site.json', 'utf8'));
+fs.writeFileSync(__dirname + '/www/accueil.html', fullDocument(data));
+// Page de secours envoyée avec le programme : affichée tant que l'administration n'a pas publié accueil.html
+fs.writeFileSync(__dirname + '/www/accueil-initial.html', fullDocument(data));
+fs.writeFileSync(__dirname + '/www/mentions-legales-initial.html', legalDocument(data));
+console.log('accueil.html généré');
+
+// Version des fichiers de l'administration : force le navigateur à charger la dernière version après chaque mise à jour.
+const crypto = require('crypto');
+const h = crypto.createHash('sha256');
+['www/assets/admin/admin.js', 'www/assets/admin/admin.css', 'www/assets/render.js', 'www/assets/site.css', 'www/assets/admin/vendor/qrcode.js'].forEach(f => h.update(fs.readFileSync(__dirname + '/' + f)));
+const ver = h.digest('hex').slice(0, 10);
+const adminHtml = __dirname + '/www/admin/index.html';
+fs.writeFileSync(adminHtml, fs.readFileSync(adminHtml, 'utf8').replace(/(\.\.\/assets\/[^"?]+\.(?:js|css))(\?v=[a-z0-9]+)?"/g, '$1?v=' + ver + '"'));
+console.log('admin : version ' + ver);
+
+// Listes de commandes sftp utilisées par envoyer-sur-ovh.bat (droits : dossiers 755, fichiers 644, .env 600).
+const path = require('path');
+function walk(dir) {
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap(e => {
+    const p = path.posix.join(dir, e.name);
+    if (p === 'www/admin/data' || e.name.startsWith('.tmp-')) return []; // données privées du serveur local
+    return e.isDirectory() ? [{ dir: p }, ...walk(p)] : [{ file: p }];
+  });
+}
+const all = walk('www').concat([{ dir: 'www' }]).sort((a, b) => (a.dir || a.file).localeCompare(b.dir || b.file));
+const dirs = all.filter(x => x.dir).map(x => x.dir).sort((a, b) => a.split('/').length - b.split('/').length);
+const files = all.filter(x => x.file).map(x => x.file);
+// Contenus gérés par l'administration : envoyés seulement à la première installation
+const managed = f => f === 'www/accueil.html' || f === 'www/mentions-legales.html' || f === 'www/content/site.json' || (f.startsWith('www/img/uploads/') && !f.endsWith('.htaccess'));
+function script(list, withEnv) {
+  const L = [];
+  dirs.forEach(d => L.push('-mkdir ' + d));
+  list.forEach(f => L.push('put ' + f + ' ' + f));
+  dirs.forEach(d => L.push('chmod 755 ' + d));
+  list.forEach(f => L.push('chmod 644 ' + f));
+  if (withEnv) L.push('put .env .env', 'chmod 600 .env');
+  L.push('bye');
+  return L.join('\n') + '\n';
+}
+fs.mkdirSync(__dirname + '/deploy', { recursive: true });
+fs.writeFileSync(__dirname + '/deploy/installation.txt', script(files, true));
+fs.writeFileSync(__dirname + '/deploy/mise-a-jour.txt', script(files.filter(f => !managed(f)), false));
+console.log('deploy/ : ' + files.length + ' fichiers (installation), ' + files.filter(f => !managed(f)).length + ' (mise à jour)');

@@ -1,0 +1,85 @@
+@echo off
+chcp 65001 >nul
+setlocal
+cd /d "%~dp0"
+title Envoi du site L'Avenir Durable sur l'hebergement
+
+rem ==== A renseigner une fois l'hebergement choisi (espace client OVH, onglet FTP-SSH) ====
+set "HOTE=A_RENSEIGNER"
+set "COMPTE=A_RENSEIGNER"
+set "ADRESSE=https://avenirdurable.fr"
+rem ======================================================================================
+
+echo.
+echo  ==============================================================
+echo   Envoi du site L'Avenir Durable (connexion chiffree SFTP)
+echo  ==============================================================
+echo.
+
+if "%HOTE%"=="A_RENSEIGNER" (
+  echo  Ouvrez ce fichier avec le Bloc-notes et renseignez HOTE et COMPTE
+  echo  ^(serveur SSH et identifiant FTP de l'hebergement^). Voir README.md.
+  echo.
+  pause
+  exit /b 1
+)
+where sftp >nul 2>nul
+if errorlevel 1 (
+  echo  L'outil "sftp" de Windows est introuvable.
+  echo  Parametres Windows ^> Applications ^> Fonctionnalites facultatives ^> ajouter "Client OpenSSH".
+  echo.
+  pause
+  exit /b 1
+)
+if not exist "deploy\installation.txt" (
+  echo  Dossier "deploy" introuvable : lancez ce fichier depuis le dossier du projet.
+  pause
+  exit /b 1
+)
+
+echo  Que voulez-vous faire ?
+echo.
+echo   1 - Premiere installation : tout le site + le fichier .env
+echo   2 - Mise a jour du programme seulement (admin, styles, scripts, images du site)
+echo       sans toucher aux textes et photos modifies depuis l'administration
+echo.
+set /p CHOIX="  Votre choix (1 ou 2) : "
+
+echo.
+echo  Le mot de passe demande est celui du compte FTP "%COMPTE%".
+echo  Rien ne s'affiche quand vous le tapez : c'est normal. Validez avec Entree.
+echo  A la toute premiere connexion, tapez  yes  pour accepter le serveur.
+echo.
+
+if "%CHOIX%"=="1" goto installation
+if "%CHOIX%"=="2" goto miseajour
+echo  Choix non reconnu.
+pause
+exit /b 1
+
+:installation
+if not exist ".env" (
+  echo  Fichier .env introuvable dans ce dossier.
+  pause
+  exit /b 1
+)
+sftp %COMPTE%@%HOTE% < "deploy\installation.txt"
+goto fin
+
+:miseajour
+sftp %COMPTE%@%HOTE% < "deploy\mise-a-jour.txt"
+goto fin
+
+:fin
+echo.
+if errorlevel 1 goto echec
+echo  Envoi termine. Les messages "remote mkdir ... Failure" sont normaux : dossiers deja presents.
+echo  Ouvrez %ADRESSE%/admin/
+goto termine
+
+:echec
+echo  L'envoi a echoue. Verifiez le mot de passe FTP et votre connexion Internet, puis relancez.
+
+:termine
+echo.
+pause

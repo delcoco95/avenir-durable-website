@@ -1,0 +1,339 @@
+{
+  "meta": {
+    "title": "L'Avenir Durable · Sensibiliser et agir pour un quotidien écoresponsable",
+    "description": "Ateliers, activités et actions concrètes pour comprendre les enjeux environnementaux et adopter des gestes écoresponsables au quotidien.",
+    "noindex": true
+  },
+  "nav": {
+    "cta": {
+      "label": "Nous écrire",
+      "href": "#contact"
+    }
+  },
+  "footer": {
+    "text": "L'Avenir Durable · Sensibiliser et agir au quotidien",
+    "legalLabel": "Mentions légales et confidentialité",
+    "cookiesLabel": "Gestion des cookies"
+  },
+  "theme": {},
+  "social": [],
+  "sections": [
+    {
+      "uid": "sgajwqx8",
+      "type": "hero",
+      "id": "accueil",
+      "hidden": false,
+      "menu": {
+        "show": false,
+        "label": "Accueil"
+      },
+      "bg": "",
+      "data": {
+        "eyebrow": "Sensibiliser, expérimenter, agir",
+        "title1": "Semer aujourd'hui",
+        "title2": "les gestes",
+        "title3": "de demain",
+        "title4": "",
+        "lede": "L'Avenir Durable sensibilise et mobilise le public aux enjeux environnementaux et de développement durable, avec des ateliers, des activités et des actions concrètes.",
+        "cta1": {
+          "label": "Découvrir nos actions",
+          "href": "#actions"
+        },
+        "cta2": {
+          "label": "Nous écrire",
+          "href": "#contact"
+        },
+        "note": "",
+        "image": {
+          "src": "img/photos/atelier-jardin-enfants.webp",
+          "alt": "Deux enfants jardinent dans un potager, entre des planches de bois et des herbes hautes."
+        },
+        "caption": "Au potager"
+      }
+    },
+    {
+      "uid": "srg4bdz7",
+      "type": "band",
+      "id": "demarche",
+      "hidden": false,
+      "menu": {
+        "show": false,
+        "label": "Notre démarche"
+      },
+      "bg": "",
+      "data": {
+        "label": "Notre démarche",
+        "items": [
+          {
+            "text": "Sensibiliser"
+          },
+          {
+            "text": "Expérimenter"
+          },
+          {
+            "text": "Agir"
+          },
+          {
+            "text": "Ancrer"
+          }
+        ]
+      }
+    },
+    {
+      "uid": "ssk3q3rv",
+      "type": "about",
+      "id": "projet",
+      "hidden": false,
+      "menu": {
+        "show": true,
+        "label": "Le projet"
+      },
+      "bg": "",
+      "data": {
+        "eyebrow": "Le projet",
+        "title": "Rendre l'écologie concrète",
+        "intro": "Les grands enjeux environnementaux se jouent aussi dans les petits gestes de tous les jours.",
+        "image": {
+          "src": "img/photos/projet-cernes.webp",
+          "alt": ""
+        },
+        "big": "Un programme complet pour passer de la prise de conscience à l'action.",
+        "p1": "L'Avenir Durable est un projet qui vise à sensibiliser et à mobiliser le public aux enjeux environnementaux et de développement durable. Il propose des ateliers, des activités et des actions concrètes.",
+        "p2": "Son objectif : favoriser l'adoption de comportements écoresponsables dans la vie quotidienne. Les thématiques abordées couvrent un large éventail de sujets liés à la préservation de la planète.",
+        "meta": ""
+      }
+    },
+    {
+      "uid": "sgdqmc3g",
+      "type": "cards",
+      "id": "actions",
+      "hidden": false,
+      "menu": {
+        "show": true,
+        "label": "Nos actions"
+      },
+      "bg": "",
+      "data": {
+        "eyebrow": "Nos actions",
+        "title": "Quatre façons d'agir",
+        "intro": "Des formats complémentaires, du déclic à l'habitude.",
+        "items": [
+          {
+            "image": {
+              "src": "img/photos/domaine-sensibilisation.webp",
+              "alt": ""
+            },
+            "tag": "Comprendre",
+            "title": "Ateliers de sensibilisation",
+            "text": "Des temps d'échange et de pratique pour comprendre les enjeux environnementaux et de développement durable."
+          },
+          {
+            "image": {
+              "src": "img/photos/domaine-decouverte.webp",
+              "alt": ""
+            },
+            "tag": "Expérimenter",
+            "title": "Activités de découverte",
+            "text": "Observer, manipuler, expérimenter : des activités pour apprendre en faisant."
+          },
+          {
+            "image": {
+              "src": "img/photos/domaine-actions.webp",
+              "alt": ""
+            },
+            "tag": "Agir",
+            "title": "Actions concrètes",
+            "text": "Passer de l'intention à l'action, ensemble, sur le terrain."
+          },
+          {
+            "image": {
+              "src": "img/photos/domaine-ecogestes.webp",
+              "alt": ""
+            },
+            "tag": "Ancrer",
+            "title": "Écogestes au quotidien",
+            "text": "Faire des comportements écoresponsables de vraies habitudes, à la maison comme ailleurs."
+          }
+        ]
+      }
+    },
+    {
+      "uid": "s3kn3628",
+      "type": "agenda",
+      "id": "agenda",
+      "hidden": true,
+      "menu": {
+        "show": true,
+        "label": "Agenda"
+      },
+      "bg": "",
+      "data": {
+        "eyebrow": "Agenda",
+        "title": "Prochains ateliers",
+        "intro": "",
+        "empty": "Aucun atelier annoncé pour le moment.",
+        "items": []
+      }
+    },
+    {
+      "uid": "sc7smia2",
+      "type": "news",
+      "id": "actualites",
+      "hidden": true,
+      "menu": {
+        "show": true,
+        "label": "Actualités"
+      },
+      "bg": "",
+      "data": {
+        "eyebrow": "Actualités",
+        "title": "Dernières nouvelles",
+        "intro": "",
+        "items": []
+      }
+    },
+    {
+      "uid": "s261zcgd",
+      "type": "faq",
+      "id": "faq",
+      "hidden": false,
+      "menu": {
+        "show": true,
+        "label": "FAQ"
+      },
+      "bg": "",
+      "data": {
+        "eyebrow": "Questions fréquentes",
+        "title": "Vous vous demandez peut-être…",
+        "intro": "",
+        "items": [
+          {
+            "q": "Qu'est-ce que L'Avenir Durable ?",
+            "a": "Un projet qui vise à sensibiliser et à mobiliser le public aux enjeux environnementaux et de développement durable. Il propose un programme complet d'ateliers, d'activités et d'actions concrètes pour favoriser l'adoption de comportements écoresponsables dans la vie quotidienne."
+          },
+          {
+            "q": "Quelles thématiques abordez-vous ?",
+            "a": "Les thématiques couvrent un large éventail de sujets liés à la préservation de la planète et au développement durable, toujours reliés à des gestes concrets du quotidien."
+          },
+          {
+            "q": "Comment participer à un atelier ?",
+            "a": "Écrivez-nous à avenirdurable@ecomail.fr en précisant votre ville et le public concerné. Nous vous indiquerons les prochaines dates et les modalités."
+          },
+          {
+            "q": "Pouvez-vous intervenir dans notre structure (école, association, entreprise, collectivité) ?",
+            "a": "Présentez-nous votre projet et votre public par e-mail : nous étudierons ensemble le format le plus adapté."
+          },
+          {
+            "q": "Comment devenir bénévole ou proposer un partenariat ?",
+            "a": "Écrivez-nous en précisant vos envies et vos disponibilités, ou la nature du partenariat envisagé."
+          },
+          {
+            "q": "Ce site collecte-t-il mes données ?",
+            "a": "Non. Le site n'a pas de formulaire et ne dépose aucun cookie publicitaire ni de mesure d'audience. Le détail figure dans les mentions légales."
+          }
+        ]
+      }
+    },
+    {
+      "uid": "sfk84qoi",
+      "type": "cta",
+      "id": "participer",
+      "hidden": false,
+      "menu": {
+        "show": false,
+        "label": "Participer"
+      },
+      "bg": "",
+      "data": {
+        "title": "Envie de participer ou d'organiser un atelier ?",
+        "text": "Écrivez-nous : nous construirons ensemble le format le plus adapté.",
+        "button": {
+          "label": "Nous écrire",
+          "href": "mailto:avenirdurable@ecomail.fr"
+        }
+      }
+    },
+    {
+      "uid": "syrk1r5h",
+      "type": "contact",
+      "id": "contact",
+      "hidden": false,
+      "menu": {
+        "show": true,
+        "label": "Contact"
+      },
+      "bg": "",
+      "data": {
+        "eyebrow": "Contact",
+        "title": "Parlons de votre projet",
+        "intro": "Une question, une envie de participer, une idée de partenariat ? Écrivez-nous.",
+        "items": [
+          {
+            "title": "Par e-mail",
+            "text": "Pour toute question sur le projet.",
+            "link": {
+              "label": "avenirdurable@ecomail.fr",
+              "href": "mailto:avenirdurable@ecomail.fr"
+            }
+          },
+          {
+            "title": "Participer à un atelier",
+            "text": "Indiquez votre ville et le public concerné.",
+            "link": {
+              "label": "Écrire pour participer",
+              "href": "mailto:avenirdurable@ecomail.fr?subject=Participer%20%C3%A0%20un%20atelier"
+            }
+          },
+          {
+            "title": "Partenariat ou bénévolat",
+            "text": "Présentez-nous votre structure ou vos envies.",
+            "link": {
+              "label": "Proposer mon aide",
+              "href": "mailto:avenirdurable@ecomail.fr?subject=Partenariat%20ou%20b%C3%A9n%C3%A9volat"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "consent": {
+    "text": "Ce site ne dépose aucun cookie publicitaire ni de mesure d'audience. Les vidéos YouTube, elles, déposent des cookies de Google quand on les lance : vous pouvez les autoriser ou les refuser. Vous pourrez changer d'avis à tout moment avec le lien « Gestion des cookies » en bas de page.",
+    "accept": "Autoriser les vidéos YouTube",
+    "refuse": "Refuser"
+  },
+  "legal": {
+    "title": "Mentions légales et confidentialité",
+    "updated": "2026-10-25",
+    "sections": [
+      {
+        "title": "Éditeur du site",
+        "text": "L'Avenir Durable\nForme juridique : [à compléter, par exemple association loi 1901]\nSiège : [adresse à compléter]\nNuméro RNA ou SIREN : [à compléter]\nE-mail : avenirdurable@ecomail.fr"
+      },
+      {
+        "title": "Directeur ou directrice de la publication",
+        "text": "[Nom de la personne responsable de la publication, à compléter]"
+      },
+      {
+        "title": "Hébergeur",
+        "text": "[Nom, adresse et téléphone de l'hébergeur, à compléter une fois l'hébergement choisi. Exemple pour OVHcloud : OVH SAS, 2 rue Kellermann, 59100 Roubaix, France.]"
+      },
+      {
+        "title": "Propriété intellectuelle et droit à l'image",
+        "text": "Les textes, photos et le logo de ce site appartiennent à L'Avenir Durable ou sont utilisés avec l'accord de leurs auteurs. Toute reproduction sans autorisation est interdite.\n\nLes personnes photographiées ont donné leur accord ; pour les mineurs, l'accord a été donné par leurs parents ou représentants légaux. Pour demander le retrait d'une photo, écrivez à avenirdurable@ecomail.fr : nous la retirons dans les meilleurs délais.\n\nLes illustrations des domaines d'action ont été créées pour ce site. Les polices de caractères sont publiées sous licence SIL Open Font License 1.1."
+      },
+      {
+        "title": "Données personnelles",
+        "text": "Le site ne contient pas de formulaire : il ne collecte aucune donnée personnelle sur les visiteurs. Si vous nous écrivez par e-mail, vos coordonnées servent uniquement à vous répondre et ne sont ni vendues ni transmises.\n\nResponsable du traitement : L'Avenir Durable, joignable à avenirdurable@ecomail.fr.\n\nSécurité de l'espace d'administration : pour protéger le site contre les intrusions, la date, l'adresse IP et le navigateur utilisés lors des connexions à l'espace d'administration sont enregistrés (intérêt légitime : sécurité du site). Ces informations sont conservées au maximum 6 mois. L'hébergeur conserve également des journaux techniques de connexion, selon ses propres obligations légales.\n\nVous disposez d'un droit d'accès, de rectification, d'effacement, d'opposition, de limitation et de portabilité de vos données. Pour l'exercer, écrivez à avenirdurable@ecomail.fr. Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL : https://www.cnil.fr"
+      },
+      {
+        "title": "Cookies",
+        "text": "Ce site n'utilise aucun cookie publicitaire ni de mesure d'audience.\n\nSeul l'espace d'administration, réservé aux responsables, dépose un cookie de session strictement nécessaire à la connexion ; il est dispensé de consentement.\n\nSi des vidéos YouTube sont ajoutées au site, elles ne sont chargées qu'avec votre accord : tant que vous ne les avez pas autorisées, aucun contenu n'est demandé à YouTube et aucun cookie n'est déposé. Si vous les autorisez, Google (YouTube) peut déposer des cookies, selon sa politique : https://policies.google.com/privacy\n\nVotre choix est conservé 6 mois dans votre navigateur. Vous pouvez le modifier à tout moment avec le lien « Gestion des cookies » en bas de chaque page."
+      },
+      {
+        "title": "Liens externes",
+        "text": "Le site peut contenir des liens vers d'autres sites. L'Avenir Durable n'est pas responsable de leur contenu ni de leur politique de confidentialité."
+      }
+    ]
+  },
+  "version": 3
+}
