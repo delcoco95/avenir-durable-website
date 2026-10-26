@@ -2,13 +2,17 @@
 
 Site d'une page pour **L'Avenir Durable** (sensibilisation aux enjeux environnementaux et au développement durable), avec un **espace d'administration** pour tout modifier sans connaissances techniques : textes, photos, vidéos, sections, couleurs, mentions légales.
 
-Même principe que le site Mwasa Musiki :
-
 - **HTML, CSS et JavaScript sans framework.** Les pages publiées sont de simples fichiers HTML, rapides et sans base de données.
-- **Un seul fichier PHP** (`www/admin/api.php`) pour la connexion et la publication.
-- Le contenu est rangé dans `www/content/site.json`. Le bouton **Publier** de l'administration régénère `www/accueil.html` et `www/mentions-legales.html`.
+- **Un seul fichier PHP** (`www/admin/api.php`), utilisé uniquement par l'administration pour la connexion et la publication.
+- Le contenu est rangé dans `www/content/site.json`. Le bouton **Publier** régénère `www/accueil.html` et `www/mentions-legales.html`.
 
-## Lancer le site sur son ordinateur (Windows)
+## Voir le site
+
+**Sans rien installer** : double-cliquez sur `ouvrir-le-site.html` (ou sur `www/accueil.html`). Le site public s'ouvre dans le navigateur.
+
+## Tester l'administration sur son ordinateur (Windows)
+
+L'administration a besoin de PHP, comme chez l'hébergeur où PHP est déjà fourni.
 
 1. **Installer PHP** (une seule fois). Dans PowerShell :
    ```powershell
@@ -22,11 +26,19 @@ Même principe que le site Mwasa Musiki :
 
 Sur Mac ou Linux : `php -S localhost:8000 -t www outils/routeur-local.php`
 
+## Identité visuelle
+
+- **Typographies** : Bricolage Grotesque (titres) et Instrument Sans (texte), hébergées sur le site (licence SIL OFL 1.1).
+- **Couleurs** : vert du logo, vert forêt profond, jaune pollen pour les boutons, fond papier clair.
+- **Logo** : le logo d'origine a été détouré (fond transparent). Il existe en vert (`img/logo.webp`) et en clair pour les fonds sombres (`img/logo-clair.webp`).
+- **Mise en page** : une grande photo d'accueil en plein écran avec l'en-tête transparent, un bandeau de mots défilant, et les actions en grandes lignes illustrées sur fond sombre. Viennent ensuite une mosaïque de photos, les questions fréquentes sur deux colonnes, un appel à l'action sur photo et un pied de page avec le nom en très grand.
+- **Photos** : Unsplash et Pixabay, libres de droits pour un usage commercial ou non, sans attribution obligatoire. Les auteurs sont tout de même crédités dans les mentions légales. La photo de l'atelier au potager vient du site de l'association.
+
 ## Utiliser l'administration
 
 - **Cliquer** sur un texte pour l'écrire, sur une photo pour la remplacer, sur un bouton pour changer son lien.
 - **Survoler** une section ou une carte pour la déplacer, la masquer, la dupliquer ou la supprimer. « + Ajouter une section ici » propose 18 modèles (texte, cartes, galerie, vidéo, agenda, actualités, questions fréquentes…).
-- **Apparence** : couleurs, polices, boutons, titre et description pour Google, et la case « version de présentation » (le site demande aux moteurs de recherche de ne pas l'afficher tant qu'elle est cochée).
+- **Apparence** : couleurs, polices, boutons, animations, titre et description pour Google, et la case « version de présentation » (le site demande aux moteurs de recherche de ne pas l'afficher tant qu'elle est cochée).
 - **Sécurité** : changement du mot de passe, double authentification par code à 6 chiffres, journal des connexions.
 - Rien n'est en ligne tant que vous n'avez pas cliqué sur **Publier**. Une sauvegarde de la version précédente est gardée à chaque publication (dossier `avenir-data/backups`, hors du site).
 
@@ -56,7 +68,7 @@ Le fichier `www/.htaccess` force le HTTPS, retire le « www », bloque l'accès 
 - Les textes des quatre domaines d'action et des questions fréquentes, rédigés à partir des informations publiées sur avenirdurable.fr (voir `docs/RESEARCH.md`).
 - Les réseaux sociaux, à ajouter quand les comptes officiels sont connus.
 - L'autorisation de diffuser la photo des enfants au potager, et un logo en meilleure qualité (SVG).
-- Les illustrations des domaines (cernes de croissance) ont été créées pour le site et peuvent être remplacées par de vraies photos depuis l'administration.
+- Les photos Unsplash et Pixabay illustrent les thèmes : elles peuvent être remplacées par de vraies photos des ateliers depuis l'administration (cliquer sur une photo, puis « Remplacer »).
 
 ## Arborescence
 
@@ -68,7 +80,8 @@ www/                    site publié (ce qui part sur l'hébergement)
   assets/site.css|js    apparence et animations du site
   admin/                administration (index.html, api.php)
 build.js                régénère les pages de départ et les listes d'envoi
-lancer-en-local.bat     lance le site sur l'ordinateur (PHP)
+ouvrir-le-site.html     ouvre le site public sans rien installer
+lancer-en-local.bat     lance le site et l'administration sur l'ordinateur (PHP)
 envoyer-sur-ovh.bat     envoie le site sur l'hébergement (SFTP)
 docs/RESEARCH.md        recherche sur l'association et sources
 ```

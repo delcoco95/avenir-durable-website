@@ -10,16 +10,16 @@
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
-  var VERSION = 'ad1';
+  var VERSION = 'ad2';
   var MONTHS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
   var MONTHS_SHORT = ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'];
   var DAYS = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
 
   var FONTS = {
-    'fraunces': { name: 'Fraunces (titres, par défaut)', family: '"Fraunces",Georgia,serif', file: 'fraunces-variable.woff2', face: 'Fraunces', range: '100 900' },
-    'work-sans': { name: 'Work Sans (texte, par défaut)', family: '"Work Sans",system-ui,-apple-system,"Segoe UI",sans-serif', file: 'work-sans-variable.woff2', face: 'Work Sans', range: '100 900' },
-    'archivo': { name: 'Archivo (étroite)', family: '"Archivo","Arial Narrow",Arial,sans-serif', file: 'archivo-variable.woff2', face: 'Archivo', range: '100 900' },
-    'oswald': { name: 'Oswald (étroite)', family: '"Oswald","Arial Narrow",sans-serif', file: 'oswald-variable.woff2', face: 'Oswald', range: '200 700' },
+    'bricolage': { name: 'Bricolage Grotesque (titres, par défaut)', family: '"Bricolage Grotesque",system-ui,sans-serif', file: 'bricolage-grotesque-variable.woff2', face: 'Bricolage Grotesque', range: '200 800' },
+    'instrument': { name: 'Instrument Sans (texte, par défaut)', family: '"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif', file: 'instrument-sans-variable.woff2', face: 'Instrument Sans', range: '400 700' },
+    'fraunces': { name: 'Fraunces (serif moderne)', family: '"Fraunces",Georgia,serif', file: 'fraunces-variable.woff2', face: 'Fraunces', range: '100 900' },
+    'work-sans': { name: 'Work Sans (neutre)', family: '"Work Sans",system-ui,-apple-system,"Segoe UI",sans-serif', file: 'work-sans-variable.woff2', face: 'Work Sans', range: '100 900' },
     'montserrat': { name: 'Montserrat (moderne)', family: '"Montserrat",Arial,sans-serif', file: 'montserrat-variable.woff2', face: 'Montserrat', range: '100 900' },
     'raleway': { name: 'Raleway (élégante)', family: '"Raleway",Arial,sans-serif', file: 'raleway-variable.woff2', face: 'Raleway', range: '100 900' },
     'playfair-display': { name: 'Playfair Display (classique)', family: '"Playfair Display",Georgia,serif', file: 'playfair-display-variable.woff2', face: 'Playfair Display', range: '400 900' },
@@ -29,26 +29,26 @@
     'open-sans': { name: 'Open Sans (neutre)', family: '"Open Sans",system-ui,sans-serif', file: 'open-sans-variable.woff2', face: 'Open Sans', range: '300 800' },
     'source-sans-3': { name: 'Source Sans 3 (sobre)', family: '"Source Sans 3",system-ui,sans-serif', file: 'source-sans-3-variable.woff2', face: 'Source Sans 3', range: '200 900' }
   };
-  var THEME_DEFAULT = { creme: '#f7f9f2', brun: '#2f7a34', orange: '#a9cf54', sable: '#e6f0da', nuit: '#1e2a22', display: 'fraunces', body: 'work-sans', notes: true, btnBg: '', btnText: '', btnRadius: 999, textSize: 100 };
+  var THEME_DEFAULT = { creme: '#f6f7f2', brun: '#2f7a34', orange: '#f3c74f', sable: '#dcebd3', nuit: '#12352a', display: 'bricolage', body: 'instrument', notes: true, btnBg: '', btnText: '', btnRadius: 999, textSize: 100 };
   var COLOR_KEYS = ['creme', 'brun', 'orange', 'sable', 'nuit'];
 
   /* Types de sections proposés dans l'administration */
   var SECTION_TYPES = {
     free: { name: 'Mise en page libre', desc: 'Des blocs à placer où vous voulez (titres, textes, photos, vidéos, boutons…), sur 1 à 3 colonnes.' },
     hero: { name: 'Grand titre d\'accueil', desc: 'Titre, texte, boutons et grande photo ou vidéo.' },
-    band: { name: 'Bandeau de mots', desc: 'Une courte liste sur fond coloré (ex. : publics accueillis).' },
+    band: { name: 'Bandeau défilant', desc: 'Quelques mots qui défilent en grand sur toute la largeur.' },
     about: { name: 'Présentation', desc: 'Titre, photo ou vidéo et plusieurs paragraphes.' },
     'text-media': { name: 'Texte et photo/vidéo', desc: 'Un texte à côté d\'une photo ou d\'une vidéo, avec un bouton.' },
-    cards: { name: 'Cartes', desc: 'Une grille de cartes avec photo, étiquette, titre et texte (ex. : domaines d\'action).' },
+    cards: { name: 'Liste illustrée', desc: 'De grandes lignes avec étiquette, titre, texte et photo (ex. : domaines d\'action).' },
     stages: { name: 'Cartes sur fond coloré', desc: 'Des cartes avec grand titre sur un fond de couleur (ex. : projets).' },
-    gallery: { name: 'Galerie', desc: 'Une grille de photos et de vidéos avec légendes.' },
+    gallery: { name: 'Mosaïque de photos', desc: 'Des photos de tailles variées avec légendes.' },
     video: { name: 'Vidéo', desc: 'Une grande vidéo (YouTube ou fichier) avec un titre.' },
     slots: { name: 'Horaires', desc: 'Des créneaux horaires et un lieu.' },
     faq: { name: 'Questions fréquentes', desc: 'Des questions qui s\'ouvrent au clic, avec leur réponse.' },
     agenda: { name: 'Agenda', desc: 'Les prochains événements ; les dates passées disparaissent seules.' },
     news: { name: 'Actualités', desc: 'Des nouvelles avec photo, date et lien.' },
     quote: { name: 'Citation', desc: 'Une phrase mise en valeur, avec son auteur.' },
-    cta: { name: 'Appel à l\'action', desc: 'Un titre, une phrase et un bouton sur fond coloré.' },
+    cta: { name: 'Appel à l\'action', desc: 'Un titre, une phrase et un bouton sur une grande photo.' },
     text: { name: 'Texte libre', desc: 'Un titre et des paragraphes.' },
     join: { name: 'Adhésion / participation', desc: 'Texte, photo et carte d\'informations avec bouton.' },
     contact: { name: 'Contact', desc: 'Des blocs de contact avec lien (téléphone, e-mail…).' }
@@ -93,9 +93,10 @@
     var ts = +th.textSize; if (isFinite(ts) && ts >= 80 && ts <= 130 && ts !== 100) css += 'html{font-size:' + Math.round(ts) + '%}';
     Object.keys(used).forEach(function (file) {
       var f = used[file];
-      if (f.face === 'Fraunces' || f.face === 'Work Sans') return; // déjà déclarées dans site.css
+      if (f.face === 'Bricolage Grotesque' || f.face === 'Instrument Sans') return; // déjà déclarées dans site.css
       css += '@font-face{font-family:"' + f.face + '";src:url("' + base + 'assets/fonts/' + f.file + '") format("woff2");font-weight:' + f.range + ';font-style:normal;font-display:swap}';
     });
+    if (th.notes === false) css += '.marquee-track,.hero-media img{animation:none!important}';
     return css + ':root{' + vars.join(';') + '}';
   }
 
@@ -190,7 +191,8 @@
       { title: 'Éditeur du site', text: 'L\'Avenir Durable\nForme juridique : [à compléter, par exemple association loi 1901]\nSiège : [adresse à compléter]\nNuméro RNA ou SIREN : [à compléter]\nE-mail : avenirdurable@ecomail.fr' },
       { title: 'Directeur ou directrice de la publication', text: '[Nom de la personne responsable de la publication, à compléter]' },
       { title: 'Hébergeur', text: '[Nom, adresse et téléphone de l\'hébergeur, à compléter une fois l\'hébergement choisi. Exemple pour OVHcloud : OVH SAS, 2 rue Kellermann, 59100 Roubaix, France.]' },
-      { title: 'Propriété intellectuelle et droit à l\'image', text: 'Les textes, photos et le logo de ce site appartiennent à L\'Avenir Durable ou sont utilisés avec l\'accord de leurs auteurs. Toute reproduction sans autorisation est interdite.\n\nLes personnes photographiées ont donné leur accord ; pour les mineurs, l\'accord a été donné par leurs parents ou représentants légaux. Pour demander le retrait d\'une photo, écrivez à avenirdurable@ecomail.fr : nous la retirons dans les meilleurs délais.\n\nLes illustrations des domaines d\'action ont été créées pour ce site. Les polices de caractères sont publiées sous licence SIL Open Font License 1.1.' },
+      { title: 'Propriété intellectuelle et droit à l\'image', text: 'Les textes, photos et le logo de ce site appartiennent à L\'Avenir Durable ou sont utilisés avec l\'accord de leurs auteurs. Toute reproduction sans autorisation est interdite.\n\nLes personnes photographiées ont donné leur accord ; pour les mineurs, l\'accord a été donné par leurs parents ou représentants légaux. Pour demander le retrait d\'une photo, écrivez à avenirdurable@ecomail.fr : nous la retirons dans les meilleurs délais.\n\nLes polices de caractères sont publiées sous licence SIL Open Font License 1.1.' },
+      { title: 'Crédits photos', text: 'Photos Unsplash, utilisées selon la licence Unsplash (https://unsplash.com/license) : Gustav Gullstrand (forêt), Hammilton Ojijo (mains qui plantent), CDC (atelier au jardin), Brian Yurasits (nettoyage de plage), Sri Lanka (légumes), Timur Shakerzianov (randonnée), Sandie Clarke (semis).\n\nPhotos Pixabay, utilisées selon la licence de contenu Pixabay (https://pixabay.com/fr/service/license-summary/) : compost, abeille, bacs de tri, panneaux solaires, éoliennes.\n\nPhoto de l\'atelier au potager et logo : L\'Avenir Durable.' },
       { title: 'Données personnelles', text: 'Le site ne contient pas de formulaire : il ne collecte aucune donnée personnelle sur les visiteurs. Si vous nous écrivez par e-mail, vos coordonnées servent uniquement à vous répondre et ne sont ni vendues ni transmises.\n\nResponsable du traitement : L\'Avenir Durable, joignable à avenirdurable@ecomail.fr.\n\nSécurité de l\'espace d\'administration : pour protéger le site contre les intrusions, la date, l\'adresse IP et le navigateur utilisés lors des connexions à l\'espace d\'administration sont enregistrés (intérêt légitime : sécurité du site). Ces informations sont conservées au maximum 6 mois. L\'hébergeur conserve également des journaux techniques de connexion, selon ses propres obligations légales.\n\nVous disposez d\'un droit d\'accès, de rectification, d\'effacement, d\'opposition, de limitation et de portabilité de vos données. Pour l\'exercer, écrivez à avenirdurable@ecomail.fr. Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL : https://www.cnil.fr' },
       { title: 'Cookies', text: 'Ce site n\'utilise aucun cookie publicitaire ni de mesure d\'audience.\n\nSeul l\'espace d\'administration, réservé aux responsables, dépose un cookie de session strictement nécessaire à la connexion ; il est dispensé de consentement.\n\nSi des vidéos YouTube sont ajoutées au site, elles ne sont chargées qu\'avec votre accord : tant que vous ne les avez pas autorisées, aucun contenu n\'est demandé à YouTube et aucun cookie n\'est déposé. Si vous les autorisez, Google (YouTube) peut déposer des cookies, selon sa politique : https://policies.google.com/privacy\n\nVotre choix est conservé 6 mois dans votre navigateur. Vous pouvez le modifier à tout moment avec le lien « Gestion des cookies » en bas de chaque page.' },
       { title: 'Liens externes', text: 'Le site peut contenir des liens vers d\'autres sites. L\'Avenir Durable n\'est pas responsable de leur contenu ni de leur politique de confidentialité.' }
@@ -245,21 +247,21 @@
     var data = {
       free: { rows: [{ layout: '1-1', valign: 'center', cols: [
         { blocks: [{ type: 'eyebrow', text: 'Sur-titre' }, { type: 'heading', level: 2, text: 'Titre de la section' }, { type: 'text', text: 'Écrivez votre texte ici.\n\nGlissez les blocs pour les déplacer, d\'une colonne ou d\'une section à l\'autre.' }, { type: 'button', variant: 'fill', link: { label: 'En savoir plus', href: '#contact' } }] },
-        { blocks: [{ type: 'media', ratio: '4-3', image: img('img/photos/domaine-sensibilisation.webp'), caption: '' }] }
+        { blocks: [{ type: 'media', ratio: '4-3', image: img('img/photos/atelier-jardin-pedagogique.webp'), caption: '' }] }
       ] }] },
-      hero: { eyebrow: 'Sur-titre', title1: 'Votre', title2: 'grand titre', title3: 'ici', title4: '.', lede: 'Une phrase d\'introduction.', cta1: { label: 'Bouton principal', href: '#contact' }, cta2: { label: '', href: '' }, note: '', image: img('img/photos/atelier-jardin-enfants.webp'), caption: '' },
+      hero: { eyebrow: 'Sur-titre', title1: 'Votre', title2: 'grand titre', title3: 'ici', title4: '.', lede: 'Une phrase d\'introduction.', cta1: { label: 'Bouton principal', href: '#contact' }, cta2: { label: '', href: '' }, note: '', image: img('img/photos/foret-lumiere.webp'), caption: '' },
       band: { label: 'Titre', items: [{ text: 'Premier mot' }, { text: 'Deuxième mot' }] },
       about: { eyebrow: 'Sur-titre', title: 'Titre de la section', intro: 'Une phrase d\'introduction.', image: img(), big: 'Une phrase importante mise en valeur.', p1: 'Premier paragraphe.', p2: 'Deuxième paragraphe.', meta: '' },
-      'text-media': { eyebrow: 'Sur-titre', title: 'Titre de la section', text: 'Écrivez votre texte ici.\n\nLaissez une ligne vide pour commencer un nouveau paragraphe.', button: { label: 'En savoir plus', href: '#contact' }, image: img('img/photos/domaine-sensibilisation.webp'), reverse: false },
-      cards: { eyebrow: 'Sur-titre', title: 'Titre des cartes', intro: 'Une phrase d\'introduction.', items: [{ image: img('img/photos/domaine-sensibilisation.webp'), tag: 'Étiquette', title: 'Première carte', text: 'Texte de la carte.' }, { image: img('img/photos/domaine-decouverte.webp'), tag: 'Étiquette', title: 'Deuxième carte', text: 'Texte de la carte.' }] },
-      stages: { eyebrow: 'Sur-titre', title: 'Titre des cartes', intro: 'Une phrase d\'introduction.', items: [{ image: img('img/photos/domaine-actions.webp'), title: 'Première carte', text: 'Texte de la carte.' }, { image: img('img/photos/domaine-ecogestes.webp'), title: 'Deuxième carte', text: 'Texte de la carte.' }] },
-      gallery: { eyebrow: 'Galerie', title: 'Nos moments', intro: '', items: [{ image: img('img/photos/domaine-actions.webp'), caption: 'Légende' }, { image: img('img/photos/domaine-ecogestes.webp'), caption: 'Légende' }, { image: img('img/photos/domaine-decouverte.webp'), caption: 'Légende' }] },
+      'text-media': { eyebrow: 'Sur-titre', title: 'Titre de la section', text: 'Écrivez votre texte ici.\n\nLaissez une ligne vide pour commencer un nouveau paragraphe.', button: { label: 'En savoir plus', href: '#contact' }, image: img('img/photos/atelier-jardin-pedagogique.webp'), reverse: false },
+      cards: { eyebrow: 'Sur-titre', title: 'Titre des cartes', intro: 'Une phrase d\'introduction.', items: [{ image: img('img/photos/atelier-jardin-pedagogique.webp'), tag: 'Étiquette', title: 'Première carte', text: 'Texte de la carte.' }, { image: img('img/photos/randonnee-decouverte.webp'), tag: 'Étiquette', title: 'Deuxième carte', text: 'Texte de la carte.' }] },
+      stages: { eyebrow: 'Sur-titre', title: 'Titre des cartes', intro: 'Une phrase d\'introduction.', items: [{ image: img('img/photos/nettoyage-plage.webp'), title: 'Première carte', text: 'Texte de la carte.' }, { image: img('img/photos/legumes-locaux.webp'), title: 'Deuxième carte', text: 'Texte de la carte.' }] },
+      gallery: { eyebrow: 'Galerie', title: 'Nos moments', intro: '', items: [{ image: img('img/photos/nettoyage-plage.webp'), caption: 'Légende' }, { image: img('img/photos/legumes-locaux.webp'), caption: 'Légende' }, { image: img('img/photos/randonnee-decouverte.webp'), caption: 'Légende' }] },
       video: { eyebrow: 'Vidéo', title: 'Titre de la vidéo', intro: 'Quelques mots pour présenter la vidéo.', image: { src: '', alt: 'Vidéo de l\'association' } },
       slots: { eyebrow: 'Horaires', title: 'Quand venir', intro: '', items: [{ title: 'Atelier', when: 'Jour · horaire' }], place: 'Adresse', link: { label: '', href: '' } },
       agenda: { eyebrow: 'Agenda', title: 'Prochains événements', intro: '', empty: 'Aucun événement annoncé pour le moment.', items: [] },
       news: { eyebrow: 'Actualité', title: 'Dernières nouvelles', intro: '', items: [] },
       quote: { text: 'Une phrase à mettre en valeur.', author: 'Auteur ou autrice' },
-      cta: { title: 'Envie de participer ?', text: 'Une phrase pour convaincre.', button: { label: 'Nous écrire', href: '#contact' } },
+      cta: { title: 'Envie de participer ?', text: 'Une phrase pour convaincre.', button: { label: 'Nous écrire', href: '#contact' }, image: img('img/photos/semis-mains.webp') },
       text: { eyebrow: 'Sur-titre', title: 'Titre', text: 'Écrivez votre texte ici.\n\nLaissez une ligne vide pour commencer un nouveau paragraphe.' },
       join: { eyebrow: 'Participer', title: 'Rejoignez-nous', lead: 'Une phrase.', image: img('img/photos/atelier-jardin-enfants.webp'), cardTitle: 'Titre de la carte', rows: [{ k: 'Information', v: '…' }], button: { label: 'Nous écrire', href: 'mailto:avenirdurable@ecomail.fr' }, note: '' },
       contact: { eyebrow: 'Contact', title: 'Nous contacter', intro: '', items: [{ title: 'E-mail', text: '', link: { label: 'avenirdurable@ecomail.fr', href: 'mailto:avenirdurable@ecomail.fr' } }] },
@@ -339,8 +341,8 @@
         return imgTag;
       },
       head: function (P, s) {
-        return '<div class="head"><div>' + K.t(P + '.eyebrow', s.eyebrow, 'p', 'eyebrow') + K.t(P + '.title', s.title, 'h2', '') + '</div>' +
-          (s.intro || E ? K.t(P + '.intro', s.intro, 'p', '') : '') + '</div>';
+        return '<div class="head">' + (s.eyebrow || E ? K.t(P + '.eyebrow', s.eyebrow, 'p', 'eyebrow') : '') + K.t(P + '.title', s.title, 'h2', '') +
+          (s.intro || E ? K.t(P + '.intro', s.intro, 'p', 'intro') : '') + '</div>';
       }
     };
     return K;
@@ -451,26 +453,32 @@
   var RENDERERS = {
     free: freeHTML,
     hero: function (K, P, he) {
-      return '<div class="wrap"><div>' + K.t(P + '.eyebrow', he.eyebrow, 'p', 'eyebrow') +
-        '<h1>' + K.t(P + '.title1', he.title1, 'span', 'b') + '<br>' + K.t(P + '.title2', he.title2) + '<br>' +
-        K.t(P + '.title3', he.title3, 'span', 'o') + ' ' + K.t(P + '.title4', he.title4) + '</h1>' +
-        K.t(P + '.lede', he.lede, 'p', 'lede') +
-        '<div class="ctas">' + K.maybeLn(P + '.cta1', he.cta1, 'btn btn-fill') + K.maybeLn(P + '.cta2', he.cta2, 'btn btn-ghost') + '</div>' +
+      var line = function (k, cls) { return he[k] || K.E ? '<span class="ln' + (cls ? ' ' + cls : '') + '">' + K.t(P + '.' + k, he[k]) + '</span>' : ''; };
+      return '<div class="hero-media">' + K.media(P + '.image', he.image, ' width="1700" height="1275" fetchpriority="high"') + '</div>' +
+        '<div class="wrap hero-in">' + (he.eyebrow || K.E ? K.t(P + '.eyebrow', he.eyebrow, 'p', 'hero-kicker') : '') +
+        '<h1>' + line('title1') + line('title2') + line('title3', 'hl') + line('title4') + '</h1>' +
+        '<div class="hero-foot">' + K.t(P + '.lede', he.lede, 'p', 'lede') +
+        '<div class="ctas">' + K.maybeLn(P + '.cta1', he.cta1, 'btn btn-fill') + K.maybeLn(P + '.cta2', he.cta2, 'btn btn-glass') + '</div></div>' +
         (he.note || K.E ? K.t(P + '.note', he.note, 'p', 'note') : '') +
-        '</div><figure class="photo-hero">' + K.media(P + '.image', he.image, ' width="640" height="853" fetchpriority="high"') +
-        (he.caption || K.E ? K.t(P + '.caption', he.caption, 'figcaption') : '') + '</figure></div>';
+        '</div>' + (he.caption || K.E ? K.t(P + '.caption', he.caption, 'p', 'hero-caption') : '') +
+        '<a class="scroll-cue" href="#contenu" aria-label="Descendre vers la suite"><span></span></a>';
     },
     band: function (K, P, pu) {
-      return '<div class="wrap">' + K.t(P + '.label', pu.label, 'span', 'lbl') +
-        '<ul' + K.list(P + '.items', 'public') + '>' +
-        (pu.items || []).map(function (x, i) { return '<li' + K.item(P + '.items', i) + '>' + K.t(P + '.items.' + i + '.text', x.text) + '</li>'; }).join('') +
-        '</ul></div>';
+      var items = pu.items || [];
+      if (K.E) {
+        return '<div class="wrap marquee-edit">' + K.t(P + '.label', pu.label, 'span', 'lbl') + '<ul' + K.list(P + '.items', 'public') + '>' +
+          items.map(function (x, i) { return '<li' + K.item(P + '.items', i) + '>' + K.t(P + '.items.' + i + '.text', x.text) + '</li>'; }).join('') + '</ul></div>';
+      }
+      var one = items.map(function (x) { return '<li>' + esc(x.text) + '</li>'; }).join('');
+      return '<h2 class="sr">' + esc(pu.label) + '</h2><div class="marquee" aria-hidden="false"><ul class="marquee-track">' + one +
+        '</ul><ul class="marquee-track" aria-hidden="true">' + one + '</ul></div>';
     },
     about: function (K, P, as) {
-      return '<div class="wrap">' + K.head(P, as) +
-        '<div class="about"><figure>' + K.media(P + '.image', as.image, ' width="900" height="600" loading="lazy"') + '</figure>' +
-        '<div class="txt">' + K.t(P + '.big', as.big, 'p', 'big') + K.t(P + '.p1', as.p1, 'p') + K.t(P + '.p2', as.p2, 'p') +
-        (as.meta || K.E ? K.t(P + '.meta', as.meta, 'p', 'meta') : '') + '</div></div></div>';
+      return '<div class="wrap split"><div class="split-text">' + (as.eyebrow || K.E ? K.t(P + '.eyebrow', as.eyebrow, 'p', 'eyebrow') : '') +
+        K.t(P + '.title', as.title, 'h2') + (as.intro || K.E ? K.t(P + '.intro', as.intro, 'p', 'intro') : '') +
+        '<div class="split-body">' + K.t(P + '.big', as.big, 'p', 'big') + K.t(P + '.p1', as.p1, 'p') + K.t(P + '.p2', as.p2, 'p') +
+        (as.meta || K.E ? K.t(P + '.meta', as.meta, 'p', 'meta') : '') + '</div></div>' +
+        '<figure class="split-media">' + K.media(P + '.image', as.image, ' width="1400" height="1120" loading="lazy"') + '</figure></div>';
     },
     'text-media': function (K, P, s) {
       return '<div class="wrap"><div class="tm' + (s.reverse ? ' tm-rev' : '') + '"><div class="tm-text">' +
@@ -479,12 +487,14 @@
         '</div><figure class="tm-media">' + K.media(P + '.image', s.image, ' width="900" height="600" loading="lazy"') + '</figure></div></div>';
     },
     cards: function (K, P, at) {
-      return '<div class="wrap">' + K.head(P, at) + '<div class="ateliers"' + K.list(P + '.items', 'atelier') + '>' +
+      return '<div class="wrap">' + K.head(P, at) + '<ol class="rows"' + K.list(P + '.items', 'atelier') + '>' +
         (at.items || []).map(function (x, i) {
           var p = P + '.items.' + i;
-          return '<article class="at"' + K.item(P + '.items', i) + '>' + K.media(p + '.image', x.image, ' width="900" height="600" loading="lazy"') +
-            '<div class="body">' + (x.tag || K.E ? K.t(p + '.tag', x.tag, 'span', 'tag') : '') + K.t(p + '.title', x.title, 'h3') + K.t(p + '.text', x.text, 'p') + '</div></article>';
-        }).join('') + '</div></div>';
+          return '<li class="row"' + K.item(P + '.items', i) + '>' +
+            '<div class="row-head">' + (x.tag || K.E ? K.t(p + '.tag', x.tag, 'span', 'tag') : '') + K.t(p + '.title', x.title, 'h3') + '</div>' +
+            K.t(p + '.text', x.text, 'p', 'row-text') +
+            '<figure class="row-media">' + K.media(p + '.image', x.image, ' width="900" height="600" loading="lazy"') + '</figure></li>';
+        }).join('') + '</ol></div>';
     },
     stages: function (K, P, pr) {
       return '<div class="wrap">' + K.head(P, pr) + '<div class="stages"' + K.list(P + '.items', 'projet') + '>' +
@@ -495,10 +505,10 @@
         }).join('') + '</div></div>';
     },
     gallery: function (K, P, g) {
-      return '<div class="wrap">' + K.head(P, g) + '<div class="gallery"' + K.list(P + '.items', 'photo') + '>' +
+      return '<div class="wrap">' + K.head(P, g) + '<div class="bento"' + K.list(P + '.items', 'photo') + '>' +
         (g.items || []).map(function (x, i) {
           var p = P + '.items.' + i;
-          return '<figure class="gal"' + K.item(P + '.items', i) + '>' + K.media(p + '.image', x.image, ' width="900" height="600" loading="lazy"') +
+          return '<figure class="tile"' + K.item(P + '.items', i) + '>' + K.media(p + '.image', x.image, ' width="1200" height="800" loading="lazy"') +
             (x.caption || K.E ? K.t(p + '.caption', x.caption, 'figcaption') : '') + '</figure>';
         }).join('') + '</div></div>';
     },
@@ -549,8 +559,10 @@
         (q.author || K.E ? '<figcaption>' + K.t(P + '.author', q.author) + '</figcaption>' : '') + '</figure></div>';
     },
     cta: function (K, P, c) {
-      return '<div class="wrap cta-box"><div>' + K.t(P + '.title', c.title, 'h2') + K.t(P + '.text', c.text, 'p') + '</div>' +
-        K.maybeLn(P + '.button', c.button, 'btn btn-dark') + '</div>';
+      var has = c.image && (c.image.src || c.image.video);
+      return (has ? '<div class="cta-media">' + K.media(P + '.image', c.image, ' width="1800" height="1200" loading="lazy"') + '</div>' : (K.E ? '<button type="button" class="cta-addimg" data-img="' + P + '.image">+ Photo de fond</button>' : '')) +
+        '<div class="wrap cta-box">' + K.t(P + '.title', c.title, 'h2') + K.t(P + '.text', c.text, 'p') +
+        K.maybeLn(P + '.button', c.button, 'btn btn-fill btn-lg') + '</div>';
     },
     text: function (K, P, s) {
       return '<div class="wrap narrow">' + K.t(P + '.eyebrow', s.eyebrow, 'p', 'eyebrow') + K.t(P + '.title', s.title, 'h2') + K.tx(P + '.text', s.text, '', true) + '</div>';
@@ -564,7 +576,7 @@
         }).join('') + '</dl>' + K.maybeLn(P + '.button', ad.button, 'btn btn-fill') + (ad.note || K.E ? K.t(P + '.note', ad.note, 'small') : '') + '</div></div>';
     },
     faq: function (K, P, fq) {
-      return '<div class="wrap">' + K.head(P, fq) + '<div class="faq"' + K.list(P + '.items', 'faq') + '>' +
+      return '<div class="wrap faq-grid">' + K.head(P, fq) + '<div class="faq"' + K.list(P + '.items', 'faq') + '>' +
         (fq.items || []).map(function (x, i) {
           var p = P + '.items.' + i;
           // Dans l'administration, la question reste ouverte et n'est pas un <summary> (sinon chaque clic la refermerait)
@@ -574,21 +586,22 @@
         }).join('') + '</div></div>';
     },
     contact: function (K, P, co) {
-      return '<div class="wrap">' + K.head(P, co) + '<div class="contact"' + K.list(P + '.items', 'contact') + '>' +
+      return '<div class="wrap contact-grid">' + K.head(P, co) + '<ul class="contact"' + K.list(P + '.items', 'contact') + '>' +
         (co.items || []).map(function (x, i) {
           var p = P + '.items.' + i;
-          return '<div class="ct"' + K.item(P + '.items', i) + '>' + K.t(p + '.title', x.title, 'h3') + (x.text || K.E ? K.t(p + '.text', x.text, 'p') : '') + K.ln(p + '.link', x.link, '') + '</div>';
-        }).join('') + '</div></div>';
+          return '<li class="ct"' + K.item(P + '.items', i) + '><div>' + K.t(p + '.title', x.title, 'h3') + (x.text || K.E ? K.t(p + '.text', x.text, 'p') : '') + '</div>' +
+            K.ln(p + '.link', x.link, 'ct-link') + '</li>';
+        }).join('') + '</ul></div>';
     }
   };
   /* Balise et classes de chaque type de section (pour garder l'apparence existante) */
   var WRAPPERS = {
     free: ['section', 'block'],
-    hero: ['section', 'hero'], band: ['div', 'ages'], about: ['section', 'block'], 'text-media': ['section', 'block'],
-    cards: ['section', 'block cards-sec'], stages: ['section', 'block projects'], gallery: ['section', 'block'], video: ['section', 'block'],
+    hero: ['section', 'hero'], band: ['section', 'marquee-sec'], about: ['section', 'block'], 'text-media': ['section', 'block'],
+    cards: ['section', 'block rows-sec'], stages: ['section', 'block projects'], gallery: ['section', 'block bento-sec'], video: ['section', 'block'],
     slots: ['section', 'block horaires'], agenda: ['section', 'block agenda-wrap'], news: ['section', 'block'],
     quote: ['section', 'block quote-sec'], cta: ['section', 'block cta-sec'], text: ['section', 'block'],
-    join: ['section', 'block join'], contact: ['section', 'block'], faq: ['section', 'block faq-sec']
+    join: ['section', 'block join'], contact: ['section', 'block contact-sec'], faq: ['section', 'block faq-sec']
   };
 
   function socialLinks(K, d, cls) {
@@ -606,9 +619,12 @@
     }).join('');
     var cta = d.nav && d.nav.cta ? d.nav.cta : { label: '', href: '' };
     var ctaObj = home ? cta : { label: cta.label, href: /^#/.test(cta.href || '') ? 'accueil.html' + cta.href : cta.href };
-    return '<header class="top"><div class="wrap">' +
-      '<a class="brand" href="' + (home ? '#top' : 'accueil.html') + '" aria-label="L\'Avenir Durable, accueil"><img src="' + K.base + 'img/logo.webp" alt="Logo L\'Avenir Durable" width="130" height="60"></a>' +
-      '<button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="menu"><span></span>Menu</button>' +
+    var overHero = home && d.sections.some(function (s) { return !s.hidden && s.type === 'hero'; }) && d.sections.filter(function (s) { return !s.hidden; })[0].type === 'hero';
+    return '<header class="top' + (overHero && !K.E ? ' over' : '') + '" id="haut-de-page"><div class="wrap">' +
+      '<a class="brand" href="' + (home ? '#top' : 'accueil.html') + '" aria-label="L\'Avenir Durable, accueil">' +
+      '<img class="logo-dark" src="' + K.base + 'img/logo.webp" alt="Logo L\'Avenir Durable" width="150" height="68">' +
+      '<img class="logo-light" src="' + K.base + 'img/logo-clair.webp" alt="" width="150" height="68"></a>' +
+      '<button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="menu"><span></span><b>Menu</b></button>' +
       '<nav aria-label="Navigation principale"><ul class="menu" id="menu">' + links +
       (cta.label || K.E ? '<li class="menu-cta">' + K.ln('nav.cta', ctaObj, 'btn btn-fill') + '</li>' : '') +
       '<li class="menu-social">' + socialLinks(K, d, 'top-social') + '</li>' +
@@ -617,12 +633,17 @@
 
   function footer(K, d) {
     var fo = d.footer || {};
-    return '<footer><div class="wrap"><span class="brand"><img src="' + K.base + 'img/logo.webp" alt="Logo L\'Avenir Durable" width="110" height="51"></span>' +
-      '<span>© <span id="annee">' + new Date().getFullYear() + '</span> ' + K.t('footer.text', fo.text) + '</span>' +
-      socialLinks(K, d, 'foot-social') +
-      '<nav class="foot-links" aria-label="Informations légales"><a href="' + K.base + 'mentions-legales.html"' + '>' + esc(fo.legalLabel) + '</a>' +
+    var links = d.sections.filter(function (s) { return !s.hidden && s.menu && s.menu.show; }).map(function (s) {
+      return '<li><a href="' + K.base + 'accueil.html#' + esc(s.id) + '">' + esc(s.menu.label || s.id) + '</a></li>';
+    }).join('');
+    return '<footer><div class="wrap foot-grid">' +
+      '<div class="foot-brand"><img src="' + K.base + 'img/logo-clair.webp" alt="Logo L\'Avenir Durable" width="180" height="81">' + K.t('footer.text', fo.text, 'p') + socialLinks(K, d, 'foot-social') + '</div>' +
+      '<nav class="foot-nav" aria-label="Plan du site"><ul>' + links + '</ul></nav>' +
+      '<nav class="foot-links" aria-label="Informations légales"><a href="' + K.base + 'mentions-legales.html">' + esc(fo.legalLabel) + '</a>' +
       '<button type="button" class="linklike" data-consent-open>' + esc(fo.cookiesLabel) + '</button>' +
-      '<a href="#top">Haut de page ↑</a><a class="admin-link" href="' + K.base + 'admin/" rel="nofollow">Espace administration</a></nav></div></footer>';
+      '<a class="admin-link" href="' + K.base + 'admin/" rel="nofollow">Espace administration</a></nav>' +
+      '<p class="copy">© <span id="annee">' + new Date().getFullYear() + '</span> L\'Avenir Durable</p></div>' +
+      '<p class="foot-word" aria-hidden="true">Avenir Durable</p></footer>';
   }
 
   function consentBanner(K, d) {
@@ -634,17 +655,7 @@
       '<a class="consent-more" href="' + K.base + 'mentions-legales.html#cookies">En savoir plus</a></div>';
   }
 
-  /* Pousse qui grandit au défilement (signature visuelle, décorative) */
-  function notesLayer(d) {
-    var th = d.theme || {};
-    if (th.notes === false) return '';
-    var leaves = [[300, -1], [520, 1], [740, -1], [960, 1], [1180, -1]].map(function (l, i) {
-      return '<path class="lf lf' + i + '" d="M20 ' + l[0] + 'c' + (l[1] * 14) + ' -4 ' + (l[1] * 24) + ' -16 ' + (l[1] * 26) + ' -32c' + (l[1] * -16) + ' 0 ' + (l[1] * -26) + ' 12 ' + (l[1] * -26) + ' 32z" style="transform-origin:20px ' + l[0] + 'px"/>';
-    }).join('');
-    return '<div class="grow" id="grow" aria-hidden="true"><svg viewBox="0 0 40 1400" preserveAspectRatio="xMidYMax meet">' +
-      '<path class="stem" pathLength="1" d="M20 1400C14 1220 26 1060 20 900S14 560 20 380 24 140 20 40"/>' + leaves +
-      '<circle class="bud" cx="20" cy="40" r="7"/></svg></div>';
-  }
+  function notesLayer() { return ''; }
 
   function sectionHTML(K, s, i) {
     var R = RENDERERS[s.type];
@@ -652,11 +663,11 @@
     if (s.hidden && !K.E) return '';
     var w = WRAPPERS[s.type] || ['section', 'block'];
     var sst = s.style || {}, css = sectionStyle(s);
-    var plain = ['free', 'about', 'text-media', 'cards', 'gallery', 'video', 'slots', 'news', 'text', 'contact', 'faq'].indexOf(s.type) >= 0 && (!s.bg || s.bg === 'creme') && !/^#/.test(sst.bg || '');
+    var plain = ['free', 'about', 'text-media', 'gallery', 'video', 'slots', 'news', 'text', 'faq'].indexOf(s.type) >= 0 && (!s.bg || s.bg === 'creme') && !/^#/.test(sst.bg || '');
     var pad = ['s', 'm', 'l', '0'].indexOf(sst.pad) >= 0 ? ' pad-' + sst.pad : '';
     var cls = 'sec sec-' + s.type + ' ' + w[1] + (s.bg ? ' bg-' + s.bg : '') + (plain ? ' plain' : '') + (/^#/.test(sst.color || '') ? ' tc' : '') + pad + (s.hidden ? ' sec-hidden' : '');
     var attrs = ' id="' + esc(s.id) + '" class="' + cls + '"' + (css ? ' style="' + esc(css) + '"' : '') + (K.E ? ' data-section="' + i + '"' : '');
-    if (w[0] === 'div' && s.type === 'band') attrs += ' role="region" aria-label="' + esc(s.data.label || 'Bandeau') + '"';
+    
     return '<' + w[0] + attrs + '>' + R(K, 'sections.' + i + '.data', s.data || {}) + '</' + w[0] + '>';
   }
 
@@ -712,7 +723,7 @@
       '<meta property="og:image" content="' + esc(image || 'img/partage.png') + '">\n<meta property="og:locale" content="fr_FR">\n' +
       (d.meta && d.meta.noindex ? '<meta name="robots" content="noindex, nofollow">\n' : '') +
       '<link rel="icon" type="image/png" href="img/icone.png">\n' +
-      '<link rel="preload" href="assets/fonts/fraunces-variable.woff2" as="font" type="font/woff2" crossorigin>\n' +
+      '<link rel="preload" href="assets/fonts/bricolage-grotesque-variable.woff2" as="font" type="font/woff2" crossorigin>\n' +
       '<link rel="stylesheet" href="assets/site.css?v=' + VERSION + '">\n<style id="mw-theme">' + themeCSS(d.theme, '', d) + '</style>\n</head>\n<body>\n' +
       '<!-- Page générée automatiquement depuis content/site.json par l\'administration. Modifiez le contenu sur /admin/. -->\n';
   }

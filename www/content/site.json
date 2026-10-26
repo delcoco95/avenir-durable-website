@@ -19,7 +19,7 @@
   "social": [],
   "sections": [
     {
-      "uid": "sgajwqx8",
+      "uid": "sa9gitpw",
       "type": "hero",
       "id": "accueil",
       "hidden": false,
@@ -45,14 +45,14 @@
         },
         "note": "",
         "image": {
-          "src": "img/photos/atelier-jardin-enfants.webp",
-          "alt": "Deux enfants jardinent dans un potager, entre des planches de bois et des herbes hautes."
+          "src": "img/photos/foret-lumiere.webp",
+          "alt": "Forêt de pins traversée par la lumière du soleil."
         },
-        "caption": "Au potager"
+        "caption": ""
       }
     },
     {
-      "uid": "srg4bdz7",
+      "uid": "sjiu5gbm",
       "type": "band",
       "id": "demarche",
       "hidden": false,
@@ -75,12 +75,15 @@
           },
           {
             "text": "Ancrer"
+          },
+          {
+            "text": "Recommencer"
           }
         ]
       }
     },
     {
-      "uid": "ssk3q3rv",
+      "uid": "si7yypd9",
       "type": "about",
       "id": "projet",
       "hidden": false,
@@ -94,8 +97,8 @@
         "title": "Rendre l'écologie concrète",
         "intro": "Les grands enjeux environnementaux se jouent aussi dans les petits gestes de tous les jours.",
         "image": {
-          "src": "img/photos/projet-cernes.webp",
-          "alt": ""
+          "src": "img/photos/mains-plantation.webp",
+          "alt": "Deux paires de mains plantent ensemble une jeune pousse dans la terre."
         },
         "big": "Un programme complet pour passer de la prise de conscience à l'action.",
         "p1": "L'Avenir Durable est un projet qui vise à sensibiliser et à mobiliser le public aux enjeux environnementaux et de développement durable. Il propose des ateliers, des activités et des actions concrètes.",
@@ -104,7 +107,7 @@
       }
     },
     {
-      "uid": "sgdqmc3g",
+      "uid": "sdt8rptw",
       "type": "cards",
       "id": "actions",
       "hidden": false,
@@ -120,8 +123,8 @@
         "items": [
           {
             "image": {
-              "src": "img/photos/domaine-sensibilisation.webp",
-              "alt": ""
+              "src": "img/photos/atelier-jardin-pedagogique.webp",
+              "alt": "Un adulte et un enfant rempotent des plants dans un jardin."
             },
             "tag": "Comprendre",
             "title": "Ateliers de sensibilisation",
@@ -129,8 +132,8 @@
           },
           {
             "image": {
-              "src": "img/photos/domaine-decouverte.webp",
-              "alt": ""
+              "src": "img/photos/atelier-jardin-enfants.webp",
+              "alt": "Deux enfants jardinent dans un potager, entre des planches de bois et des herbes hautes."
             },
             "tag": "Expérimenter",
             "title": "Activités de découverte",
@@ -138,8 +141,8 @@
           },
           {
             "image": {
-              "src": "img/photos/domaine-actions.webp",
-              "alt": ""
+              "src": "img/photos/nettoyage-plage.webp",
+              "alt": "Des bénévoles ramassent des déchets sur une plage."
             },
             "tag": "Agir",
             "title": "Actions concrètes",
@@ -147,8 +150,8 @@
           },
           {
             "image": {
-              "src": "img/photos/domaine-ecogestes.webp",
-              "alt": ""
+              "src": "img/photos/legumes-locaux.webp",
+              "alt": "Légumes de saison posés sur une toile de jute."
             },
             "tag": "Ancrer",
             "title": "Écogestes au quotidien",
@@ -158,7 +161,67 @@
       }
     },
     {
-      "uid": "s3kn3628",
+      "uid": "sxb5jndv",
+      "type": "gallery",
+      "id": "gestes",
+      "hidden": false,
+      "menu": {
+        "show": false,
+        "label": "Au quotidien"
+      },
+      "bg": "",
+      "data": {
+        "eyebrow": "Au quotidien",
+        "title": "Des gestes simples, des effets durables",
+        "intro": "Composter, trier, consommer local, préserver le vivant : autant de sujets à explorer ensemble.",
+        "items": [
+          {
+            "image": {
+              "src": "img/photos/compost.webp",
+              "alt": "Bacs à compost en bois dans un jardin."
+            },
+            "caption": "Composter"
+          },
+          {
+            "image": {
+              "src": "img/photos/abeille-fleur.webp",
+              "alt": "Une abeille butine une fleur violette."
+            },
+            "caption": "Préserver la biodiversité"
+          },
+          {
+            "image": {
+              "src": "img/photos/tri-selectif.webp",
+              "alt": "Poubelles de tri de différentes couleurs alignées."
+            },
+            "caption": "Trier ses déchets"
+          },
+          {
+            "image": {
+              "src": "img/photos/randonnee-decouverte.webp",
+              "alt": "Un groupe de jeunes marche sur un sentier en forêt."
+            },
+            "caption": "Découvrir la nature"
+          },
+          {
+            "image": {
+              "src": "img/photos/panneaux-solaires.webp",
+              "alt": "Panneaux solaires installés près de maisons."
+            },
+            "caption": "Économiser l'énergie"
+          },
+          {
+            "image": {
+              "src": "img/photos/eoliennes.webp",
+              "alt": "Éoliennes blanches sous un ciel bleu."
+            },
+            "caption": "Énergies renouvelables"
+          }
+        ]
+      }
+    },
+    {
+      "uid": "sv79arhe",
       "type": "agenda",
       "id": "agenda",
       "hidden": true,
@@ -176,7 +239,7 @@
       }
     },
     {
-      "uid": "sc7smia2",
+      "uid": "sghdqtdr",
       "type": "news",
       "id": "actualites",
       "hidden": true,
@@ -193,7 +256,7 @@
       }
     },
     {
-      "uid": "s261zcgd",
+      "uid": "sg3b962h",
       "type": "faq",
       "id": "faq",
       "hidden": false,
@@ -235,7 +298,7 @@
       }
     },
     {
-      "uid": "sfk84qoi",
+      "uid": "spu3panj",
       "type": "cta",
       "id": "participer",
       "hidden": false,
@@ -250,11 +313,15 @@
         "button": {
           "label": "Nous écrire",
           "href": "mailto:avenirdurable@ecomail.fr"
+        },
+        "image": {
+          "src": "img/photos/semis-mains.webp",
+          "alt": ""
         }
       }
     },
     {
-      "uid": "syrk1r5h",
+      "uid": "s1omyspb",
       "type": "contact",
       "id": "contact",
       "hidden": false,
@@ -319,7 +386,11 @@
       },
       {
         "title": "Propriété intellectuelle et droit à l'image",
-        "text": "Les textes, photos et le logo de ce site appartiennent à L'Avenir Durable ou sont utilisés avec l'accord de leurs auteurs. Toute reproduction sans autorisation est interdite.\n\nLes personnes photographiées ont donné leur accord ; pour les mineurs, l'accord a été donné par leurs parents ou représentants légaux. Pour demander le retrait d'une photo, écrivez à avenirdurable@ecomail.fr : nous la retirons dans les meilleurs délais.\n\nLes illustrations des domaines d'action ont été créées pour ce site. Les polices de caractères sont publiées sous licence SIL Open Font License 1.1."
+        "text": "Les textes, photos et le logo de ce site appartiennent à L'Avenir Durable ou sont utilisés avec l'accord de leurs auteurs. Toute reproduction sans autorisation est interdite.\n\nLes personnes photographiées ont donné leur accord ; pour les mineurs, l'accord a été donné par leurs parents ou représentants légaux. Pour demander le retrait d'une photo, écrivez à avenirdurable@ecomail.fr : nous la retirons dans les meilleurs délais.\n\nLes polices de caractères sont publiées sous licence SIL Open Font License 1.1."
+      },
+      {
+        "title": "Crédits photos",
+        "text": "Photos Unsplash, utilisées selon la licence Unsplash (https://unsplash.com/license) : Gustav Gullstrand (forêt), Hammilton Ojijo (mains qui plantent), CDC (atelier au jardin), Brian Yurasits (nettoyage de plage), Sri Lanka (légumes), Timur Shakerzianov (randonnée), Sandie Clarke (semis).\n\nPhotos Pixabay, utilisées selon la licence de contenu Pixabay (https://pixabay.com/fr/service/license-summary/) : compost, abeille, bacs de tri, panneaux solaires, éoliennes.\n\nPhoto de l'atelier au potager et logo : L'Avenir Durable."
       },
       {
         "title": "Données personnelles",

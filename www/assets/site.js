@@ -1,6 +1,6 @@
 /*
  * L'Avenir Durable : menu mobile, année, événements passés masqués,
- * consentement aux vidéos YouTube (rien n'est chargé avant l'accord), pousse qui grandit au défilement,
+ * consentement aux vidéos YouTube (rien n'est chargé avant l'accord), en-tête transparent sur la photo d'accueil,
  * apparition douce des blocs situés plus bas dans la page.
  */
 (function () {
@@ -15,7 +15,7 @@
     var set = function (open) { m.classList.toggle('open', open); b.setAttribute('aria-expanded', open ? 'true' : 'false'); };
     b.addEventListener('click', function () { set(!m.classList.contains('open')); });
     m.addEventListener('click', function (e) { if (e.target.closest('a')) set(false); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') set(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && m.classList.contains('open')) { set(false); document.documentElement.style.overflow = ''; b.focus(); } });
   }
 
   /* ---------- Année, agenda ---------- */
@@ -93,20 +93,28 @@
     btn.addEventListener('click', function () { showBanner(true); var f = banner && banner.querySelector('button'); if (f) f.focus(); });
   });
 
-  /* ---------- Pousse qui grandit au défilement ---------- */
-  var grow = document.getElementById('grow');
-  if (grow && !reduceMotion) {
-    var leaves = grow.querySelectorAll('.lf'), ticking = false;
-    var onScroll = function () {
-      ticking = false;
-      var max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      var p = Math.min(1, Math.max(0, window.scrollY / max));
-      grow.style.setProperty('--p', p.toFixed(3));
-      leaves.forEach(function (lf, i) { lf.classList.toggle('on', p > (i + 1) / (leaves.length + 1) - 0.05); });
-    };
-    window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
-    onScroll();
-  }
+  /* ---------- En-tête : transparent sur la grande photo, plein dès qu'on descend ---------- */
+  var top = document.querySelector('.top');
+  var hero = document.querySelector('.hero');
+  var heroImg = hero && hero.querySelector('.hero-media');
+  var ticking = false;
+  var onScroll = function () {
+    ticking = false;
+    var y = window.scrollY;
+    if (top) top.classList.toggle('solid', y > 40);
+    // léger effet de profondeur sur la photo d'accueil
+    if (heroImg && !reduceMotion && y < window.innerHeight * 1.2) heroImg.style.transform = 'translateY(' + (y * 0.25).toFixed(1) + 'px)';
+  };
+  window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  onScroll();
+  var cue = document.querySelector('.scroll-cue');
+  if (cue && hero) cue.addEventListener('click', function (e) {
+    var next = hero.nextElementSibling;
+    if (next) { e.preventDefault(); next.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' }); }
+  });
+  // Menu mobile ouvert : on bloque le défilement de la page derrière
+  if (b && m) b.addEventListener('click', function () { document.documentElement.style.overflow = m.classList.contains('open') ? 'hidden' : ''; });
+  if (m) m.addEventListener('click', function (e) { if (e.target.closest('a')) document.documentElement.style.overflow = ''; });
 
   /* ---------- Apparition douce des blocs situés plus bas (rien n'est masqué sans JavaScript) ---------- */
   if (!reduceMotion && 'IntersectionObserver' in window) {
@@ -115,10 +123,11 @@
       entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
     }, { rootMargin: '0px 0px -8% 0px' });
     var vh = window.innerHeight;
-    document.querySelectorAll('main .head, main .at, main .stage, main .tm, main .about, main .qa, main .ct, main .gal, main .slot, main .news, main .event, main .cta-box, main .quote, main .frow').forEach(function (el, i) {
+    document.querySelectorAll('main .head, main .row, main .tile, main .split-text, main .split-media, main .qa, main .ct, main .cta-box, main .tm, main .stage, main .gal, main .slot, main .news, main .event, main .quote, main .frow').forEach(function (el) {
       if (el.getBoundingClientRect().top < vh) return; // déjà visible : pas d'effet
       el.classList.add('rv');
-      el.style.transitionDelay = (i % 4) * 70 + 'ms';
+      var sib = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
+      el.style.transitionDelay = Math.min(sib, 5) * 70 + 'ms';
       io.observe(el);
     });
   }

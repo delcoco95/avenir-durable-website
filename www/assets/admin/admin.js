@@ -304,7 +304,7 @@
       '<h3 class="mwa-sub">Boutons</h3>' +
       colorPick('f-btnbg', 'Couleur des boutons', th.btnBg, th.orange) + colorPick('f-btntx', 'Couleur du texte des boutons', th.btnText, th.nuit) +
       '<div class="mwa-field"><label for="f-btnrad">Forme des boutons</label><select id="f-btnrad">' + [[999, 'Pilule (bords ronds)'], [12, 'Arrondis'], [6, 'Légèrement arrondis'], [0, 'Carrés']].map(function (o) { return '<option value="' + o[0] + '"' + (+th.btnRadius === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select></div>' +
-      '<label class="mwa-check"><input type="checkbox" id="f-notes"' + (th.notes !== false ? ' checked' : '') + '> Pousse animée qui grandit sur le côté droit quand on fait défiler la page</label>' +
+      '<label class="mwa-check"><input type="checkbox" id="f-notes"' + (th.notes !== false ? ' checked' : '') + '> Animations décoratives (bandeau de mots défilant, zoom de la photo d'accueil)</label>' +
       '<p class="mwa-note">Les changements s\'affichent tout de suite dans la page derrière. Le logo garde ses couleurs d\'origine. Pensez à un bon contraste entre le texte et le fond.</p>' +
       '<h3 class="mwa-sub">Moteurs de recherche</h3>' +
       field('f-mtitle', 'Titre du site (onglet du navigateur et Google)', (state.data.meta || {}).title || '', 'text') +

@@ -224,3 +224,9 @@
 /* Ligne de titre facultative vide : petit repère au lieu d'un énorme « Cliquez pour écrire… » */
 .mwa-preview .hero h1 [data-edit]:empty::before { content: "+ ligne"; font-size: 1rem; font-family: var(--f-body); font-style: normal; vertical-align: middle; border: 1px dashed currentColor; border-radius: 6px; padding: .1rem .4rem; }
 .mwa-title { text-transform: none; letter-spacing: 0; }
+/* Nouvelle mise en page : l'en-tête reste dans le flux sous la barre d'administration */
+.mwa-preview .top { position: sticky; background: var(--creme); color: var(--nuit); }
+.mwa-preview .top .logo-dark { opacity: 1; } .mwa-preview .top .logo-light { opacity: 0; }
+.mwa-preview .hero { min-height: 86vh; }
+.mwa-preview .hero-media img { animation: none; }
+.mwa-preview .row-media { transform: none; }
