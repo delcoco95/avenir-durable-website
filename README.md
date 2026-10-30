@@ -42,17 +42,16 @@ Sur Mac ou Linux : `php -S localhost:8000 -t www outils/routeur-local.php`
 - **Sécurité** : changement du mot de passe, double authentification par code à 6 chiffres, journal des connexions.
 - Rien n'est en ligne tant que vous n'avez pas cliqué sur **Publier**. Une sauvegarde de la version précédente est gardée à chaque publication (dossier `avenir-data/backups`, hors du site).
 
-## Mettre en ligne (hébergement mutualisé PHP, par exemple OVHcloud)
+## Mettre en ligne (OVHcloud, hébergement gratuit 100 Mo lié à avenirdurable.fr)
 
-1. Prendre un hébergement avec PHP 8.1 ou plus.
-2. Ouvrir `envoyer-sur-ovh.bat` avec le Bloc-notes et renseigner `HOTE` et `COMPTE` (espace client OVH › Hébergement › onglet FTP-SSH).
-3. Si vous avez modifié le code : `node build.js` (régénère les pages de départ et les listes d'envoi du dossier `deploy`).
-4. Lancer `envoyer-sur-ovh.bat` :
-   - choix **1** pour la première installation : tout le site, plus le fichier `.env` placé à côté du dossier `www` ;
-   - choix **2** pour les mises à jour suivantes. Elles ne touchent ni aux contenus modifiés depuis l'administration, ni au `.env`.
-5. Ouvrir `https://votre-domaine/admin/` et choisir le mot de passe définitif.
+L'offre gratuite n'a pas de SSH : l'envoi se fait en FTP chiffré (FTPS) avec `envoyer-sur-ovh.bat`, qui utilise `outils/envoyer-ftp.ps1` (PowerShell, déjà présent sur Windows).
 
-Le fichier `www/.htaccess` force le HTTPS, retire le « www », bloque l'accès aux fichiers cachés et ajoute les en-têtes de sécurité.
+1. Dans `envoyer-sur-ovh.bat`, renseigner `HOTE` (serveur FTP, ex. `ftp.clusterXXX.hosting.ovh.net`) et `COMPTE` (identifiant FTP), visibles dans l'espace client OVH › Hébergements › onglet FTP-SSH.
+2. Lancer `node build.js` (met à jour les listes d'envoi), puis `envoyer-sur-ovh.bat`, choix **1** la première fois (tout le site + `.env`), choix **2** ensuite (programme seulement, sans écraser ce qui a été modifié dans l'administration).
+3. Le site est dans le dossier `www` de l'hébergement ; `.env` et `avenir-data/` sont à côté, hors de portée des visiteurs.
+4. Ouvrir https://avenirdurable.fr/admin/ : à la première connexion, un nouveau mot de passe est demandé.
+
+Place disponible : 100 Mo en tout (le site en occupe environ 6). Les photos et vidéos ajoutées depuis l'administration sont limitées à 40 Mo, et chaque vidéo à 25 Mo.
 
 ## Sécurité
 

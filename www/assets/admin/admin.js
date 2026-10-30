@@ -1129,7 +1129,7 @@
     var o = getPath(state.data, path);
     var cur = o.video && o.video.kind === 'file' ? o.video : null;
     openPop('Photo ou vidéo', mediaTabs('file') +
-      '<p class="mwa-note">Formats MP4 ou WebM, 40 Mo maximum. L\'hébergement offre peu de place (100 Mo en tout) : pour les vidéos longues, préférez YouTube.</p>' +
+      '<p class="mwa-note">Formats MP4 ou WebM, 25 Mo maximum. L\'hébergement offre peu de place (100 Mo en tout) : pour les vidéos longues, préférez YouTube.</p>' +
       '<p id="f-vidinfo" class="mwa-hint">' + (cur ? 'Vidéo actuelle : ' + R.esc(cur.src.split('/').pop()) : 'Aucune vidéo choisie.') + '</p>' +
       '<button type="button" class="mwa-btn mwa-primary" id="f-pickvid">Choisir une vidéo…</button>' +
       '<label class="mwa-check"><input type="checkbox" id="f-auto"' + (cur && cur.autoplay ? ' checked' : '') + '> Lecture automatique en boucle, sans son (vidéo d\'ambiance)</label>' +
@@ -1157,7 +1157,7 @@
     var f = $('vfile').files[0]; if (!f) return;
     var ext = /webm$/i.test(f.type) || /\.webm$/i.test(f.name) ? 'webm' : (/mp4$/i.test(f.type) || /\.mp4$/i.test(f.name) ? 'mp4' : '');
     if (!ext) { toast('Choisissez une vidéo MP4 ou WebM.', 'err'); return; }
-    if (f.size > 40 * 1024 * 1024) { toast('Vidéo trop lourde (' + Math.round(f.size / 1048576) + ' Mo, maximum 40 Mo). Utilisez plutôt YouTube.', 'err', 9000); return; }
+    if (f.size > 25 * 1024 * 1024) { toast('Vidéo trop lourde (' + Math.round(f.size / 1048576) + ' Mo, maximum 25 Mo). Utilisez plutôt YouTube.', 'err', 9000); return; }
     var path = 'img/uploads/' + slug(f.name) + '-' + Date.now().toString(36) + '.' + ext;
     var url = URL.createObjectURL(f);
     state.pendingVideos[path] = { file: f, url: url };

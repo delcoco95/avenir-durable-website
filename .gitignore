@@ -18,3 +18,6 @@ information site/
 
 # Copie statique fabriquée pour GitHub Pages
 _site/
+
+# Code de transfert du nom de domaine : ne jamais publier
+*transfer*.txt

@@ -388,9 +388,9 @@ footer{background:var(--nuit);color:color-mix(in srgb,var(--creme) 85%,transpare
 .foot-links{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:.5rem 1.6rem;align-items:center;padding-top:1.6rem;border-top:1px solid rgba(246,247,242,.16);font-size:.9rem}
 .foot-links a,.linklike{color:inherit}
 .linklike{background:none;border:0;padding:0;font:inherit;text-decoration:underline;cursor:pointer}
-.foot-links .admin-link{margin-left:auto;display:inline-flex;align-items:center;gap:.45rem;text-decoration:none;font-size:.85rem;font-weight:600;padding:.55rem 1rem;border:1.5px solid rgba(246,247,242,.45);border-radius:999px;transition:background-color .2s,color .2s}
-.foot-links .admin-link::before{content:"";width:.55rem;height:.55rem;border-radius:2px;border:2px solid currentColor;border-top-width:4px}
-.foot-links .admin-link:hover{background:var(--creme);color:var(--nuit)}
+/* Lien discret vers l'administration (même style que Mwasa Musiki) */
+.foot-links .admin-link{margin-left:auto;font-size:.75rem;color:inherit;opacity:.45;text-decoration:none}
+.foot-links .admin-link:hover,.foot-links .admin-link:focus-visible{opacity:1;text-decoration:underline}
 .copy{grid-column:1/-1;font-size:.85rem;opacity:.7;margin-top:-1.4rem}
 .foot-word{font-family:var(--f-display);font-weight:800;letter-spacing:-.06em;line-height:.8;font-size:clamp(4rem,15.5vw,15rem);white-space:nowrap;margin:2.5rem 0 -.08em;padding-left:max(24px,env(safe-area-inset-left,0px));color:color-mix(in srgb,var(--creme) 8%,var(--nuit));user-select:none}
 @media (max-width:760px){.foot-grid{grid-template-columns:1fr}.foot-links .admin-link{margin-left:0}}

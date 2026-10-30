@@ -34,8 +34,8 @@ define('PENDING_2FA', 5 * 60);          // délai pour saisir le code après le 
 define('MIN_PASSWORD', 12);
 define('PAGE', 'accueil.html');      // page d'accueil publiée (OVH bloque www/index.html)
 define('LEGAL_PAGE', 'mentions-legales.html');
-define('UPLOAD_QUOTA', 60 * 1024 * 1024); // place maximale des photos et vidéos envoyées (à adapter à l'hébergement)
-define('VIDEO_MAX', 40 * 1024 * 1024);
+define('UPLOAD_QUOTA', 40 * 1024 * 1024); // place maximale des photos et vidéos envoyées (à adapter à l'hébergement)
+define('VIDEO_MAX', 25 * 1024 * 1024);
 define('LOG_DAYS', 180);              // conservation du journal de sécurité : 6 mois
 
 function out($code, $data) { http_response_code($code); echo json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); exit; }
