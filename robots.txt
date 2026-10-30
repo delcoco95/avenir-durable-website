@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+
+Sitemap: https://delcoco95.github.io/avenir-durable-website/sitemap.xml

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Administration · L'Avenir Durable</title>
+<link rel="icon" type="image/png" href="../img/icone.png">
+<link rel="stylesheet" href="../assets/site.css?v=8f1839c361">
+<link rel="stylesheet" href="../assets/admin/admin.css?v=8f1839c361">
+</head>
+<body class="mw-admin">
+
+<!-- Écran de connexion -->
+<section id="login" class="mwa-login" hidden>
+  <div class="mwa-login-card">
+    <img src="../img/logo.webp" alt="L'Avenir Durable" width="174" height="80">
+    <h1>Administration du site</h1>
+    <p id="login-intro">Réservé aux responsables du site. Connectez-vous pour modifier et publier le site.</p>
+    <p class="mwa-small"><a href="../">← Retour au site</a></p>
+    <form id="pw-form" novalidate>
+      <label for="pw-user">Identifiant</label>
+      <input id="pw-user" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+      <label for="pw-pass">Mot de passe</label>
+      <input id="pw-pass" name="password" type="password" autocomplete="current-password" required>
+      <label class="mwa-check"><input id="pw-remember" type="checkbox" checked> Rester connecté sur cet appareil</label>
+      <button type="submit" class="btn btn-fill" id="pw-btn">Se connecter</button>
+      <p class="mwa-error" id="pw-error" role="alert" hidden></p>
+    </form>
+    <form id="code-form" novalidate hidden>
+      <label for="code">Code de vérification</label>
+      <p class="mwa-hint">Ouvrez votre application d'authentification et saisissez le code à 6 chiffres de « Avenir Durable ».</p>
+      <input id="code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9 ]*" maxlength="7" required>
+      <button type="submit" class="btn btn-fill" id="code-btn">Valider</button>
+      <p class="mwa-error" id="code-error" role="alert" hidden></p>
+      <button type="button" class="mwa-linkbtn" id="code-back">← Revenir au mot de passe</button>
+    </form>
+  </div>
+</section>
+
+<!-- Barre d'administration -->
+<div id="bar" class="mwa-bar" hidden>
+  <div class="mwa-bar-in">
+    <span class="mwa-title"><b>L'Avenir Durable</b> · Administration</span>
+    <label class="mwa-view"><span class="sr">Page à modifier</span><select id="view-select"><option value="home">Page : Accueil</option><option value="legal">Page : Mentions légales</option></select></label>
+    <span class="mwa-status" id="status">Aucune modification</span>
+    <div class="mwa-actions">
+      <button type="button" class="mwa-btn" id="help-btn">Aide</button>
+      <button type="button" class="mwa-btn" id="theme-btn">Apparence</button>
+      <button type="button" class="mwa-btn" id="security-btn">Sécurité</button>
+      <a class="mwa-btn" href="../" target="_blank" rel="noopener">Voir le site</a>
+      <button type="button" class="mwa-btn" id="discard-btn" disabled>Annuler les modifications</button>
+      <button type="button" class="mwa-btn mwa-primary" id="publish-btn" disabled>Publier</button>
+      <button type="button" class="mwa-btn mwa-ghost" id="logout-btn" title="Se déconnecter">Déconnexion</button>
+    </div>
+  </div>
+</div>
+
+<div id="tip" class="mwa-tip" hidden>
+  <b>Mode édition.</b> Cliquez sur un texte pour l'écrire, sur une photo pour la remplacer, sur un bouton ou un lien pour changer son adresse. Survolez une carte ou une section pour la déplacer, la masquer, la dupliquer ou la supprimer ; « + Ajouter une section ici » en propose de nouvelles. Rien n'est en ligne tant que vous n'avez pas cliqué sur <b>Publier</b>.
+  <button type="button" id="tip-close" aria-label="Fermer l'aide">×</button>
+</div>
+
+<div id="preview" class="mwa-preview" hidden></div>
+
+<!-- Fenêtre d'édition (photo, lien, date) -->
+<div id="pop-backdrop" class="mwa-backdrop" hidden></div>
+<form id="pop" class="mwa-pop" hidden novalidate>
+  <h2 id="pop-title">Modifier</h2>
+  <div id="pop-body"></div>
+  <div class="mwa-pop-actions">
+    <button type="button" class="mwa-btn" id="pop-cancel">Annuler</button>
+    <button type="submit" class="mwa-btn mwa-primary" id="pop-ok">Valider</button>
+  </div>
+</form>
+
+<div id="toast" class="mwa-toast" role="status" aria-live="polite" hidden></div>
+<input type="file" id="file" accept="image/*" hidden>
+<input type="file" id="vfile" accept="video/mp4,video/webm" hidden>
+
+<script src="../assets/admin/vendor/qrcode.js?v=8f1839c361"></script>
+<script src="../assets/render.js?v=8f1839c361"></script>
+<script src="../assets/admin/admin.js?v=8f1839c361"></script>
+</body>
+</html>
