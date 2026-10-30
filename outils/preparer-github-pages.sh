@@ -6,6 +6,8 @@ OUT="${1:-_site}"
 rm -rf "$OUT" && mkdir -p "$OUT"
 cp -r www/. "$OUT"/
 rm -rf "$OUT/admin" "$OUT/assets/admin"
+# Pas de PHP sur GitHub Pages : le formulaire de contact passe par FormSubmit (voir assets/site.js)
+rm -f "$OUT/contact.php"
 find "$OUT" -name '.htaccess' -delete
 cp "$OUT/accueil.html" "$OUT/index.html"
 [ -f "$OUT/mentions-legales.html" ] || cp "$OUT/mentions-legales-initial.html" "$OUT/mentions-legales.html"

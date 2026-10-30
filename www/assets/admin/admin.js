@@ -304,12 +304,18 @@
       '<h3 class="mwa-sub">Boutons</h3>' +
       colorPick('f-btnbg', 'Couleur des boutons', th.btnBg, th.orange) + colorPick('f-btntx', 'Couleur du texte des boutons', th.btnText, th.nuit) +
       '<div class="mwa-field"><label for="f-btnrad">Forme des boutons</label><select id="f-btnrad">' + [[999, 'Pilule (bords ronds)'], [12, 'Arrondis'], [6, 'Légèrement arrondis'], [0, 'Carrés']].map(function (o) { return '<option value="' + o[0] + '"' + (+th.btnRadius === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select></div>' +
-      '<label class="mwa-check"><input type="checkbox" id="f-notes"' + (th.notes !== false ? ' checked' : '') + '> Animations décoratives (bandeau de mots défilant, zoom de la photo d'accueil)</label>' +
+      '<label class="mwa-check"><input type="checkbox" id="f-notes"' + (th.notes !== false ? ' checked' : '') + '> Animations décoratives (bandeau de mots défilant, zoom de la photo d\'accueil)</label>' +
       '<p class="mwa-note">Les changements s\'affichent tout de suite dans la page derrière. Le logo garde ses couleurs d\'origine. Pensez à un bon contraste entre le texte et le fond.</p>' +
       '<h3 class="mwa-sub">Moteurs de recherche</h3>' +
       field('f-mtitle', 'Titre du site (onglet du navigateur et Google)', (state.data.meta || {}).title || '', 'text') +
       '<div class="mwa-field"><label for="f-mdesc">Description (Google)</label><textarea id="f-mdesc" rows="3" maxlength="300">' + R.esc((state.data.meta || {}).description || '') + '</textarea></div>' +
+      field('f-msite', 'Adresse du site (lien canonique, Google)', (state.data.meta || {}).siteUrl || '', 'url', 'Adresse complète, par exemple https://avenirdurable.fr/ . Sert au lien canonique, au partage et au plan du site (sitemap.xml).') +
+      field('f-mgsc', 'Code de vérification Google Search Console', (state.data.meta || {}).googleVerification || '', 'text', 'Facultatif : collez le code (ou toute la balise meta) donné par Search Console, méthode « Balise HTML ».') +
       '<label class="mwa-check"><input type="checkbox" id="f-noindex"' + ((state.data.meta || {}).noindex ? ' checked' : '') + '> Version de présentation : demander aux moteurs de recherche de ne pas afficher le site</label>' +
+      '<h3 class="mwa-sub">Coordonnées (formulaire de contact et Google)</h3>' +
+      field('f-oemail', 'E-mail qui reçoit les messages du formulaire', (state.data.org || {}).email || '', 'email') +
+      field('f-ophone', 'Téléphone', (state.data.org || {}).phone || '', 'tel') +
+      field('f-oarea', 'Ville ou zone d\'intervention', (state.data.org || {}).area || '', 'text', 'Par exemple : Marseille et Bouches-du-Rhône. Important pour apparaître dans les recherches locales.') +
       '<button type="button" class="mwa-btn" id="f-reset-theme">Revenir aux couleurs et polices d\'origine</button>',
       function () { markChanged(); return true; }, 'Appliquer');
     var live = function () {
@@ -321,6 +327,12 @@
       state.data.meta.title = document.getElementById('f-mtitle').value.trim().slice(0, 120) || 'L\'Avenir Durable';
       state.data.meta.description = document.getElementById('f-mdesc').value.trim().slice(0, 300);
       state.data.meta.noindex = document.getElementById('f-noindex').checked;
+      state.data.meta.siteUrl = document.getElementById('f-msite').value.trim().slice(0, 200);
+      state.data.meta.googleVerification = document.getElementById('f-mgsc').value.trim().slice(0, 300);
+      state.data.org = state.data.org || {};
+      state.data.org.email = document.getElementById('f-oemail').value.trim().slice(0, 200);
+      state.data.org.phone = document.getElementById('f-ophone').value.trim().slice(0, 40);
+      state.data.org.area = document.getElementById('f-oarea').value.trim().slice(0, 150);
       th.textSize = +document.getElementById('f-tsize').value; document.getElementById('f-tsize-v').textContent = th.textSize + ' %';
       th.btnBg = colorVal('f-btnbg'); th.btnText = colorVal('f-btntx'); th.btnRadius = +document.getElementById('f-btnrad').value;
       applyTheme();
@@ -750,14 +762,14 @@
 
   var TEMPLATES = {
     public: function () { return { text: 'Nouveau public' }; },
-    atelier: function () { return { image: { src: 'img/photos/domaine-sensibilisation.webp', alt: '' }, tag: 'Nouveau', title: 'Nouvelle carte', text: 'Décrivez-la en une ou deux phrases.' }; },
-    projet: function () { return { image: { src: 'img/photos/domaine-actions.webp', alt: '' }, title: 'Nouveau projet', text: 'Décrivez le projet en une ou deux phrases.' }; },
+    atelier: function () { return { image: { src: 'img/photos/atelier-exterieur.webp', alt: '' }, tag: 'Nouveau', title: 'Nouvelle carte', text: 'Décrivez-la en une ou deux phrases.' }; },
+    projet: function () { return { image: { src: 'img/photos/terrain-potager.webp', alt: '' }, title: 'Nouveau projet', text: 'Décrivez le projet en une ou deux phrases.' }; },
     event: function () { return { date: todayISO(14), time: '', place: '', title: 'Nouvel événement', text: 'Décrivez l\'événement : programme, public, tarif…', link: { label: '', href: '' } }; },
-    news: function () { return { date: todayISO(0), tag: 'Nouveau', title: 'Nouvelle actualité', text: 'Racontez ce qui s\'est passé ou ce qui arrive.', image: { src: 'img/photos/atelier-jardin-enfants.webp', alt: '' }, link: { label: '', href: '' } }; },
+    news: function () { return { date: todayISO(0), tag: 'Nouveau', title: 'Nouvelle actualité', text: 'Racontez ce qui s\'est passé ou ce qui arrive.', image: { src: 'img/photos/terrain-potager.webp', alt: '' }, link: { label: '', href: '' } }; },
     contact: function () { return { title: 'Nouveau contact', text: 'Précisez comment nous joindre.', link: { label: 'Lien', href: 'https://' } }; },
     row: function () { return { k: 'Info', v: 'Valeur' }; },
     slot: function () { return { title: 'Nouvel atelier', when: 'Jour · horaire' }; },
-    photo: function () { return { image: { src: 'img/photos/atelier-jardin-enfants.webp', alt: '' }, caption: 'Légende' }; },
+    photo: function () { return { image: { src: 'img/photos/terrain-potager.webp', alt: '' }, caption: 'Légende' }; },
     faq: function () { return { q: 'Nouvelle question ?', a: 'Écrivez la réponse ici.' }; },
     social: function () { return { network: 'autre', href: 'https://' }; },
     legal: function () { return { title: 'Nouvelle rubrique', text: 'Texte de la rubrique.' }; }

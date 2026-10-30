@@ -11,8 +11,8 @@ $uri = rawurldecode((string) parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 if (preg_match('#/\.|/admin/data(/|$)#', $uri)) { http_response_code(404); echo 'Introuvable'; return true; }
 // Dossier content : seul site.json est lisible
 if (strpos($uri, '/content/') === 0 && $uri !== '/content/site.json') { http_response_code(404); echo 'Introuvable'; return true; }
-// Seul admin/api.php peut être exécuté
-if (preg_match('#\.php$#i', $uri) && $uri !== '/admin/api.php') { http_response_code(404); echo 'Introuvable'; return true; }
+// Seuls admin/api.php et contact.php peuvent être exécutés
+if (preg_match('#\.php$#i', $uri) && $uri !== '/admin/api.php' && $uri !== '/contact.php') { http_response_code(404); echo 'Introuvable'; return true; }
 
 function send_page($file) {
     header('Content-Type: text/html; charset=utf-8');

@@ -8,6 +8,15 @@ fs.writeFileSync(__dirname + '/www/accueil-initial.html', fullDocument(data));
 fs.writeFileSync(__dirname + '/www/mentions-legales-initial.html', legalDocument(data));
 console.log('accueil.html généré');
 
+// Référencement : robots.txt et sitemap.xml (adresse du site réglée dans l'administration, champ « Adresse du site »)
+const R = require('./www/assets/render.js');
+const norm = normalize(data);
+fs.writeFileSync(__dirname + '/www/robots.txt', R.robotsTxt(norm));
+const sm = R.sitemapXml(norm, new Date().toISOString().slice(0, 10));
+if (sm) fs.writeFileSync(__dirname + '/www/sitemap.xml', sm);
+else if (fs.existsSync(__dirname + '/www/sitemap.xml')) fs.unlinkSync(__dirname + '/www/sitemap.xml');
+console.log('robots.txt' + (sm ? ' et sitemap.xml' : '') + ' générés');
+
 // Version des fichiers de l'administration : force le navigateur à charger la dernière version après chaque mise à jour.
 const crypto = require('crypto');
 const h = crypto.createHash('sha256');
@@ -30,7 +39,7 @@ const all = walk('www').concat([{ dir: 'www' }]).sort((a, b) => (a.dir || a.file
 const dirs = all.filter(x => x.dir).map(x => x.dir).sort((a, b) => a.split('/').length - b.split('/').length);
 const files = all.filter(x => x.file).map(x => x.file);
 // Contenus gérés par l'administration : envoyés seulement à la première installation
-const managed = f => f === 'www/accueil.html' || f === 'www/mentions-legales.html' || f === 'www/content/site.json' || (f.startsWith('www/img/uploads/') && !f.endsWith('.htaccess'));
+const managed = f => f === 'www/accueil.html' || f === 'www/mentions-legales.html' || f === 'www/content/site.json' || f === 'www/robots.txt' || f === 'www/sitemap.xml' || (f.startsWith('www/img/uploads/') && !f.endsWith('.htaccess'));
 function script(list, withEnv) {
   const L = [];
   dirs.forEach(d => L.push('-mkdir ' + d));

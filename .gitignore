@@ -11,3 +11,10 @@ www/admin/data/
 node_modules/
 .DS_Store
 Thumbs.db
+
+# Sources du client (photos originales, documents) : 525 Mo, gardées uniquement en local
+photo/
+information site/
+
+# Copie statique fabriquée pour GitHub Pages
+_site/

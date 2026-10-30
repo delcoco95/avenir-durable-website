@@ -60,15 +60,36 @@ Le fichier `www/.htaccess` force le HTTPS, retire le « www », bloque l'accès 
 - Protection contre les essais répétés : blocage après 5 échecs par adresse IP en 15 minutes, et après 40 échecs sur tout le site en 1 heure.
 - Session protégée : cookie `HttpOnly`, `SameSite=Strict` et `Secure` en HTTPS. Les sessions expirent et un jeton anti-CSRF est exigé.
 - Avant d'écrire une page, le serveur vérifie qu'elle ne contient aucun script, `iframe` ou formulaire ajouté. Seuls les fichiers WebP, MP4 et WebM sont acceptés, avec un contrôle de leur contenu réel.
-- Côté visiteurs, il n'y a aucun cookie, aucun formulaire et aucune ressource externe. Les vidéos YouTube ne se chargent qu'après accord.
+- Côté visiteurs, il n'y a aucun cookie ni mesure d'audience. Les vidéos YouTube ne se chargent qu'après accord.
+- Formulaire de contact : jeton signé par le serveur (au moins 3 secondes entre l'ouverture et l'envoi), champ piège invisible, 3 envois maximum par adresse IP en 10 minutes (10 par jour, 60 pour tout le site), contrôle de l'origine et des champs. Aucun message n'est conservé sur le serveur.
+
+## Formulaire de contact
+
+Les boutons qui pointent vers `#contact`, `#contact-atelier` ou `#contact-partenariat` ouvrent une fenêtre avec le motif correspondant (Question, Participer à un atelier, Partenariat ou bénévolat). Le lien « Contact » du menu, lui, descend simplement à la section Contact.
+
+- **Hébergement PHP (OVH) ou en local** : le message est envoyé par `www/contact.php`. Réglages dans `.env` (voir `.env.example`) : `CONTACT_TO` (destinataire), et de préférence un serveur d'envoi `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASSWORD`. Sans `SMTP_HOST`, la fonction `mail()` de l'hébergeur est utilisée.
+- **GitHub Pages (sans PHP)** : le message passe par le service gratuit FormSubmit, sans clé secrète. **Au premier envoi, FormSubmit envoie un e-mail de confirmation à avenirdurable@ecomail.fr : il faut cliquer une fois sur le lien d'activation**, sinon les messages ne sont pas transmis.
+- Le choix est automatique : si `contact.php` ne répond pas, le site utilise FormSubmit.
+- L'adresse de réception se règle dans l'administration (bouton Apparence › « Coordonnées »).
+
+## Référencement (Google)
+
+- Titre, description, lien canonique, données structurées (Organisation + Site web), `robots.txt` et `sitemap.xml` sont produits automatiquement à partir du contenu.
+- Dans l'administration (Apparence › « Moteurs de recherche ») : **Adresse du site** (lien canonique et sitemap), **code de vérification Google Search Console**, case « Version de présentation » (à laisser décochée pour être visible sur Google), **ville ou zone d'intervention** (indispensable pour les recherches locales).
+- À faire une fois : relier le domaine avenirdurable.fr au site (GitHub › Settings › Pages › Custom domain, ou hébergement OVH), puis changer l'« Adresse du site » ; déclarer le site dans Google Search Console et y envoyer `sitemap.xml` ; créer une fiche Google Business Profile.
+
+## Tests automatiques
+
+`bash tests/lancer-tests.sh` (Linux, macOS ou WSL ; PHP, Node.js, Python 3 et Playwright requis) lance 30 vérifications sur une copie temporaire du site, avec un faux serveur d'e-mails : page publique et SEO, fenêtre de contact, envoi et protections de `contact.php`, fichiers privés, administration (connexion, mot de passe, publication), version GitHub Pages avec FormSubmit, affichage en 375, 768, 1366 et 1920 px, console du navigateur. Vos fichiers `.env` et vos données ne sont pas touchés.
 
 ## Contenus à valider avec l'association
 
-- Les mentions légales : forme juridique, adresse, numéro RNA ou SIREN, directeur·rice de la publication, hébergeur. Les champs manquants sont marqués « [à compléter] ».
-- Les textes des quatre domaines d'action et des questions fréquentes, rédigés à partir des informations publiées sur avenirdurable.fr (voir `docs/RESEARCH.md`).
+- La ville ou la zone d'intervention (référencement local).
+- Les mentions légales : forme juridique et adresse (marquées « [à compléter] »), confirmation de Berthe Essombi Dissake comme directrice de la publication.
+- Les textes repris des documents du projet (présentation, six thèmes, « Au fil des saisons », FAQ).
 - Les réseaux sociaux, à ajouter quand les comptes officiels sont connus.
-- L'autorisation de diffuser la photo des enfants au potager, et un logo en meilleure qualité (SVG).
-- Les photos Unsplash et Pixabay illustrent les thèmes : elles peuvent être remplacées par de vraies photos des ateliers depuis l'administration (cliquer sur une photo, puis « Remplacer »).
+- L'accord des parents pour les photos où des enfants apparaissent, et un logo en meilleure qualité (SVG).
+- Les photos des ateliers viennent de l'association (sources dans `photo/`, non versionné). Les thèmes Eau, Énergie et Climat utilisent encore des photos Unsplash/Pixabay, remplaçables depuis l'administration.
 
 ## Arborescence
 
@@ -79,6 +100,9 @@ www/                    site publié (ce qui part sur l'hébergement)
   assets/render.js      fabrication des pages à partir du contenu
   assets/site.css|js    apparence et animations du site
   admin/                administration (index.html, api.php)
+  contact.php           envoi du formulaire de contact (hébergement PHP)
+  robots.txt, sitemap.xml  générés (build.js et publication)
+tests/                  tests automatiques (lancer-tests.sh)
 build.js                régénère les pages de départ et les listes d'envoi
 ouvrir-le-site.html     ouvre le site public sans rien installer
 lancer-en-local.bat     lance le site et l'administration sur l'ordinateur (PHP)

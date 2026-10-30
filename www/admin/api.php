@@ -108,6 +108,20 @@ function data_dir() {
     fail(500, "Impossible d'écrire sur l'hébergement (dossier de données).");
 }
 
+/* ---------- Référencement : sitemap.xml et robots.txt (mêmes règles que render.js) ---------- */
+function write_seo_files($data) {
+    $u = isset($data['meta']['siteUrl']) && is_string($data['meta']['siteUrl']) ? trim($data['meta']['siteUrl']) : '';
+    $u = preg_match('#^https?://[^\s"<>]+$#i', $u) ? rtrim($u, '/') . '/' : '';
+    $robots = "User-agent: *\nAllow: /\nDisallow: /admin/\n" . ($u ? "\nSitemap: {$u}sitemap.xml\n" : '');
+    atomic_write(WWW . '/robots.txt', $robots);
+    if ($u) {
+        atomic_write(WWW . '/sitemap.xml', "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n" .
+            '  <url><loc>' . htmlspecialchars($u, ENT_QUOTES | ENT_XML1, 'UTF-8') . '</loc><lastmod>' . date('Y-m-d') . "</lastmod></url>\n</urlset>\n");
+    } elseif (is_file(WWW . '/sitemap.xml')) {
+        @unlink(WWW . '/sitemap.xml');
+    }
+}
+
 /* ---------- Fichiers ---------- */
 function atomic_write($path, $content, $mode = 0644) {
     $dir = dirname($path);
@@ -512,7 +526,11 @@ switch ($action) {
         foreach (array($html, $legal) as $page) {
             if ($page === '') continue;
             if (stripos(ltrim($page), '<!doctype html>') !== 0) fail(400, 'Page invalide.');
-            if (preg_match('#<script(?![^>]*\bsrc="assets/site\.js(\?v=[\w.-]+)?")#i', $page)) fail(400, 'La page contient un script non autorisé.');
+            // seuls site.js et les données structurées (JSON-LD, jamais exécutées) sont acceptés
+            if (preg_match('#<script(?![^>]*\bsrc="assets/site\.js(\?v=[\w.-]+)?")(?!\s+type="application/ld\+json">)#i', $page)) fail(400, 'La page contient un script non autorisé.');
+            if (preg_match_all('#<script type="application/ld\+json">(.*?)</script>#is', $page, $ld)) {
+                foreach ($ld[1] as $json) if (strpos($json, '<') !== false || !is_array(json_decode($json, true))) fail(400, 'Données structurées invalides.');
+            }
             if (preg_match('#<(iframe|object|embed|form)\b#i', $page)) fail(400, 'La page contient un élément non autorisé.');
             // styles des textes : uniquement des valeurs simples (pas d'adresse, d'import ni d'expression)
             if (preg_match('#\sstyle="[^"]*(url\s*\(|expression|@import|javascript:|\\\\)#i', $page)) fail(400, 'La page contient un style non autorisé.');
@@ -531,6 +549,7 @@ switch ($action) {
         atomic_write(content_path(), $content);
         atomic_write(WWW . '/' . PAGE, $html);
         if ($legal !== '') atomic_write(WWW . '/' . LEGAL_PAGE, $legal);
+        write_seo_files($decoded);
         auth_log('publication');
         out(200, array('ok' => true, 'version' => content_version($content)));
 

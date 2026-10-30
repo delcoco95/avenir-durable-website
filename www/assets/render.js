@@ -10,7 +10,7 @@
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
-  var VERSION = 'ad2';
+  var VERSION = 'ad3';
   var MONTHS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
   var MONTHS_SHORT = ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'];
   var DAYS = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
@@ -179,6 +179,7 @@
 
   /* ---------- Contenu par défaut et migration de l'ancien format ---------- */
   var DEFAULT_SOCIAL = [];
+  var DEFAULT_ORG = { name: 'L\'Avenir Durable', email: 'avenirdurable@ecomail.fr', phone: '', siret: '', founder: '', area: '' };
   var DEFAULT_CONSENT = {
     text: 'Ce site ne dépose aucun cookie publicitaire ni de mesure d\'audience. Les vidéos YouTube, elles, déposent des cookies de Google quand on les lance : vous pouvez les autoriser ou les refuser. Vous pourrez changer d\'avis à tout moment avec le lien « Gestion des cookies » en bas de page.',
     accept: 'Autoriser les vidéos YouTube',
@@ -202,6 +203,7 @@
   function normalize(data) {
     var d = clone(data || {});
     d.meta = d.meta || { title: 'L\'Avenir Durable', description: '' };
+    d.org = d.org || clone(DEFAULT_ORG);
     d.theme = d.theme || {};
     d.nav = d.nav || { cta: { label: 'Nous écrire', href: '#contact' } };
     if (!Array.isArray(d.social)) d.social = clone(DEFAULT_SOCIAL);
@@ -243,28 +245,28 @@
 
   /* Nouvelle section d'un type donné, avec un contenu d'exemple à remplacer */
   function newSection(type) {
-    var img = function (src, alt) { return { src: src || 'img/photos/atelier-jardin-enfants.webp', alt: alt || '' }; };
+    var img = function (src, alt) { return { src: src || 'img/photos/terrain-potager.webp', alt: alt || '' }; };
     var data = {
       free: { rows: [{ layout: '1-1', valign: 'center', cols: [
         { blocks: [{ type: 'eyebrow', text: 'Sur-titre' }, { type: 'heading', level: 2, text: 'Titre de la section' }, { type: 'text', text: 'Écrivez votre texte ici.\n\nGlissez les blocs pour les déplacer, d\'une colonne ou d\'une section à l\'autre.' }, { type: 'button', variant: 'fill', link: { label: 'En savoir plus', href: '#contact' } }] },
-        { blocks: [{ type: 'media', ratio: '4-3', image: img('img/photos/atelier-jardin-pedagogique.webp'), caption: '' }] }
+        { blocks: [{ type: 'media', ratio: '4-3', image: img('img/photos/atelier-exterieur.webp'), caption: '' }] }
       ] }] },
       hero: { eyebrow: 'Sur-titre', title1: 'Votre', title2: 'grand titre', title3: 'ici', title4: '.', lede: 'Une phrase d\'introduction.', cta1: { label: 'Bouton principal', href: '#contact' }, cta2: { label: '', href: '' }, note: '', image: img('img/photos/foret-lumiere.webp'), caption: '' },
       band: { label: 'Titre', items: [{ text: 'Premier mot' }, { text: 'Deuxième mot' }] },
       about: { eyebrow: 'Sur-titre', title: 'Titre de la section', intro: 'Une phrase d\'introduction.', image: img(), big: 'Une phrase importante mise en valeur.', p1: 'Premier paragraphe.', p2: 'Deuxième paragraphe.', meta: '' },
-      'text-media': { eyebrow: 'Sur-titre', title: 'Titre de la section', text: 'Écrivez votre texte ici.\n\nLaissez une ligne vide pour commencer un nouveau paragraphe.', button: { label: 'En savoir plus', href: '#contact' }, image: img('img/photos/atelier-jardin-pedagogique.webp'), reverse: false },
-      cards: { eyebrow: 'Sur-titre', title: 'Titre des cartes', intro: 'Une phrase d\'introduction.', items: [{ image: img('img/photos/atelier-jardin-pedagogique.webp'), tag: 'Étiquette', title: 'Première carte', text: 'Texte de la carte.' }, { image: img('img/photos/randonnee-decouverte.webp'), tag: 'Étiquette', title: 'Deuxième carte', text: 'Texte de la carte.' }] },
-      stages: { eyebrow: 'Sur-titre', title: 'Titre des cartes', intro: 'Une phrase d\'introduction.', items: [{ image: img('img/photos/nettoyage-plage.webp'), title: 'Première carte', text: 'Texte de la carte.' }, { image: img('img/photos/legumes-locaux.webp'), title: 'Deuxième carte', text: 'Texte de la carte.' }] },
-      gallery: { eyebrow: 'Galerie', title: 'Nos moments', intro: '', items: [{ image: img('img/photos/nettoyage-plage.webp'), caption: 'Légende' }, { image: img('img/photos/legumes-locaux.webp'), caption: 'Légende' }, { image: img('img/photos/randonnee-decouverte.webp'), caption: 'Légende' }] },
+      'text-media': { eyebrow: 'Sur-titre', title: 'Titre de la section', text: 'Écrivez votre texte ici.\n\nLaissez une ligne vide pour commencer un nouveau paragraphe.', button: { label: 'En savoir plus', href: '#contact' }, image: img('img/photos/atelier-exterieur.webp'), reverse: false },
+      cards: { eyebrow: 'Sur-titre', title: 'Titre des cartes', intro: 'Une phrase d\'introduction.', items: [{ image: img('img/photos/atelier-exterieur.webp'), tag: 'Étiquette', title: 'Première carte', text: 'Texte de la carte.' }, { image: img('img/photos/terrain-land-art.webp'), tag: 'Étiquette', title: 'Deuxième carte', text: 'Texte de la carte.' }] },
+      stages: { eyebrow: 'Sur-titre', title: 'Titre des cartes', intro: 'Une phrase d\'introduction.', items: [{ image: img('img/photos/nettoyage-plage.webp'), title: 'Première carte', text: 'Texte de la carte.' }, { image: img('img/photos/theme-alimentation-recolte.webp'), title: 'Deuxième carte', text: 'Texte de la carte.' }] },
+      gallery: { eyebrow: 'Galerie', title: 'Nos moments', intro: '', items: [{ image: img('img/photos/nettoyage-plage.webp'), caption: 'Légende' }, { image: img('img/photos/theme-alimentation-recolte.webp'), caption: 'Légende' }, { image: img('img/photos/terrain-land-art.webp'), caption: 'Légende' }] },
       video: { eyebrow: 'Vidéo', title: 'Titre de la vidéo', intro: 'Quelques mots pour présenter la vidéo.', image: { src: '', alt: 'Vidéo de l\'association' } },
       slots: { eyebrow: 'Horaires', title: 'Quand venir', intro: '', items: [{ title: 'Atelier', when: 'Jour · horaire' }], place: 'Adresse', link: { label: '', href: '' } },
       agenda: { eyebrow: 'Agenda', title: 'Prochains événements', intro: '', empty: 'Aucun événement annoncé pour le moment.', items: [] },
       news: { eyebrow: 'Actualité', title: 'Dernières nouvelles', intro: '', items: [] },
       quote: { text: 'Une phrase à mettre en valeur.', author: 'Auteur ou autrice' },
-      cta: { title: 'Envie de participer ?', text: 'Une phrase pour convaincre.', button: { label: 'Nous écrire', href: '#contact' }, image: img('img/photos/semis-mains.webp') },
+      cta: { title: 'Envie de participer ?', text: 'Une phrase pour convaincre.', button: { label: 'Participer à un atelier', href: '#contact-atelier' }, image: img('img/photos/potager-appel-action.webp') },
       text: { eyebrow: 'Sur-titre', title: 'Titre', text: 'Écrivez votre texte ici.\n\nLaissez une ligne vide pour commencer un nouveau paragraphe.' },
-      join: { eyebrow: 'Participer', title: 'Rejoignez-nous', lead: 'Une phrase.', image: img('img/photos/atelier-jardin-enfants.webp'), cardTitle: 'Titre de la carte', rows: [{ k: 'Information', v: '…' }], button: { label: 'Nous écrire', href: 'mailto:avenirdurable@ecomail.fr' }, note: '' },
-      contact: { eyebrow: 'Contact', title: 'Nous contacter', intro: '', items: [{ title: 'E-mail', text: '', link: { label: 'avenirdurable@ecomail.fr', href: 'mailto:avenirdurable@ecomail.fr' } }] },
+      join: { eyebrow: 'Participer', title: 'Rejoignez-nous', lead: 'Une phrase.', image: img('img/photos/terrain-potager.webp'), cardTitle: 'Titre de la carte', rows: [{ k: 'Information', v: '…' }], button: { label: 'Nous contacter', href: '#contact' }, note: '' },
+      contact: { eyebrow: 'Contact', title: 'Nous contacter', intro: '', items: [{ title: 'Poser une question', text: '', link: { label: 'Écrire un message', href: '#contact' } }, { title: 'Participer à un atelier', text: '', link: { label: 'Demander un atelier', href: '#contact-atelier' } }, { title: 'Partenariat ou bénévolat', text: '', link: { label: 'Proposer mon aide', href: '#contact-partenariat' } }] },
       faq: { eyebrow: 'Questions fréquentes', title: 'Vous vous demandez peut-être…', intro: '', items: [{ q: 'Votre question ?', a: 'La réponse, en quelques phrases.' }] }
     }[type];
     var label = SECTION_TYPES[type] ? SECTION_TYPES[type].name : 'Section';
@@ -456,7 +458,7 @@
       var line = function (k, cls) { return he[k] || K.E ? '<span class="ln' + (cls ? ' ' + cls : '') + '">' + K.t(P + '.' + k, he[k]) + '</span>' : ''; };
       return '<div class="hero-media">' + K.media(P + '.image', he.image, ' width="1700" height="1275" fetchpriority="high"') + '</div>' +
         '<div class="wrap hero-in">' + (he.eyebrow || K.E ? K.t(P + '.eyebrow', he.eyebrow, 'p', 'hero-kicker') : '') +
-        '<h1>' + line('title1') + line('title2') + line('title3', 'hl') + line('title4') + '</h1>' +
+        '<h1>' + [line('title1'), line('title2'), line('title3', 'hl'), line('title4')].filter(Boolean).join(' ') + '</h1>' +
         '<div class="hero-foot">' + K.t(P + '.lede', he.lede, 'p', 'lede') +
         '<div class="ctas">' + K.maybeLn(P + '.cta1', he.cta1, 'btn btn-fill') + K.maybeLn(P + '.cta2', he.cta2, 'btn btn-glass') + '</div></div>' +
         (he.note || K.E ? K.t(P + '.note', he.note, 'p', 'note') : '') +
@@ -712,31 +714,96 @@
     return h.join('\n');
   }
 
-  function docHead(d, title, description, image) {
+  /* ---------- Référencement (SEO) ---------- */
+  function siteUrl(d) {
+    var u = String((d.meta && d.meta.siteUrl) || '').trim();
+    if (!/^https?:\/\/[^\s"<>]+$/i.test(u)) return '';
+    return u.replace(/\/?$/, '/');
+  }
+  function absUrl(d, path) {
+    var u = siteUrl(d);
+    if (!path) return u;
+    if (/^https?:/i.test(path)) return path;
+    return u ? u + String(path).replace(/^\.?\//, '') : path;
+  }
+  function phoneIntl(p) {
+    var n = String(p || '').replace(/[^\d+]/g, '');
+    if (/^0\d{9}$/.test(n)) return '+33' + n.slice(1);
+    return n;
+  }
+  /* Données structurées (schema.org) : organisation et site web. « < » est échappé pour ne jamais fermer la balise. */
+  function jsonLd(d) {
+    var u = siteUrl(d), o = d.org || {}, m = d.meta || {};
+    var hero = d.sections.filter(function (s) { return s.type === 'hero' && !s.hidden; })[0];
+    var themes = [];
+    d.sections.forEach(function (s) { if (s.type === 'cards' && !s.hidden) (s.data.items || []).forEach(function (x) { if (x.title) themes.push(x.title); }); });
+    var org = { '@type': 'Organization', name: o.name || 'L\'Avenir Durable' };
+    if (u) { org['@id'] = u + '#organisation'; org.url = u; org.logo = u + 'img/logo.webp'; }
+    if (u) org.image = u + 'img/partage.png';
+    if (m.description) org.description = m.description;
+    if (hero && hero.data) org.slogan = [hero.data.title1, hero.data.title2, hero.data.title3, hero.data.title4].filter(Boolean).join(' ');
+    if (o.email) org.email = o.email;
+    if (o.phone) org.telephone = phoneIntl(o.phone);
+    if (o.founder) org.founder = { '@type': 'Person', name: o.founder };
+    if (o.area) org.areaServed = o.area;
+    if (o.siret) org.identifier = { '@type': 'PropertyValue', propertyID: 'SIRET', value: String(o.siret).replace(/\s/g, '') };
+    if (themes.length) org.knowsAbout = themes.concat(['Éducation à l\'environnement', 'Développement durable']);
+    var same = (d.social || []).map(function (x) { return x.href; }).filter(function (h) { return /^https?:/i.test(h || ''); });
+    if (same.length) org.sameAs = same;
+    var graph = [org];
+    if (u) graph.push({ '@type': 'WebSite', '@id': u + '#site', url: u, name: o.name || 'L\'Avenir Durable', inLanguage: 'fr-FR', publisher: { '@id': u + '#organisation' } });
+    return '<script type="application/ld+json">' + JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c') + '</script>\n';
+  }
+  /* sitemap.xml et robots.txt (écrits par build.js et par la publication de l'administration) */
+  function sitemapXml(d, lastmod) {
+    var u = siteUrl(d);
+    if (!u) return '';
+    return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+      '  <url><loc>' + esc(u) + '</loc>' + (lastmod ? '<lastmod>' + esc(lastmod) + '</lastmod>' : '') + '</url>\n</urlset>\n';
+  }
+  function robotsTxt(d) {
+    var u = siteUrl(d);
+    return 'User-agent: *\nAllow: /\nDisallow: /admin/\n' + (u ? '\nSitemap: ' + u + 'sitemap.xml\n' : '');
+  }
+
+  function docHead(d, title, description, image, page) {
+    var m = d.meta || {}, o = d.org || {};
+    var canon = siteUrl(d) ? absUrl(d, page || '') : '';
+    var gv = String(m.googleVerification || '').trim().replace(/^.*content="([^"]+)".*$/, '$1');
     return '<!doctype html>\n<html lang="fr">\n<head>\n<meta charset="utf-8">\n' +
       '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n' +
       '<meta name="generator" content="avenir-render ' + VERSION + '">\n' +
       '<title>' + esc(title) + '</title>\n' +
       '<meta name="description" content="' + esc(description) + '">\n' +
+      (canon ? '<link rel="canonical" href="' + esc(canon) + '">\n' : '') +
+      (/^[\w-]{10,100}$/.test(gv) ? '<meta name="google-site-verification" content="' + esc(gv) + '">\n' : '') +
+      '<meta name="theme-color" content="#12352a">\n' +
+      '<meta property="og:type" content="website">\n' +
+      '<meta property="og:site_name" content="' + esc(o.name || 'L\'Avenir Durable') + '">\n' +
       '<meta property="og:title" content="' + esc(title) + '">\n' +
       '<meta property="og:description" content="' + esc(description) + '">\n' +
-      '<meta property="og:image" content="' + esc(image || 'img/partage.png') + '">\n<meta property="og:locale" content="fr_FR">\n' +
-      (d.meta && d.meta.noindex ? '<meta name="robots" content="noindex, nofollow">\n' : '') +
+      (canon ? '<meta property="og:url" content="' + esc(canon) + '">\n' : '') +
+      '<meta property="og:image" content="' + esc(absUrl(d, image || 'img/partage.png')) + '">\n' +
+      (image ? '' : '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n') +
+      '<meta property="og:image:alt" content="Logo ' + esc(o.name || 'L\'Avenir Durable') + '">\n<meta property="og:locale" content="fr_FR">\n' +
+      '<meta name="twitter:card" content="summary_large_image">\n' +
+      (m.noindex ? '<meta name="robots" content="noindex, nofollow">\n' : '') +
       '<link rel="icon" type="image/png" href="img/icone.png">\n' +
+      '<link rel="apple-touch-icon" href="img/icone.png">\n' +
       '<link rel="preload" href="assets/fonts/bricolage-grotesque-variable.woff2" as="font" type="font/woff2" crossorigin>\n' +
-      '<link rel="stylesheet" href="assets/site.css?v=' + VERSION + '">\n<style id="mw-theme">' + themeCSS(d.theme, '', d) + '</style>\n</head>\n<body>\n' +
+      '<link rel="stylesheet" href="assets/site.css?v=' + VERSION + '">\n<style id="mw-theme">' + themeCSS(d.theme, '', d) + '</style>\n' +
+      (page ? '' : jsonLd(d)) + '</head>\n<body data-contact="' + esc(o.email || '') + '">\n' +
       '<!-- Page générée automatiquement depuis content/site.json par l\'administration. Modifiez le contenu sur /admin/. -->\n';
   }
   var docEnd = '\n<script src="assets/site.js?v=' + VERSION + '" defer></script>\n</body>\n</html>\n';
 
   function fullDocument(data) {
     var d = normalize(data), m = d.meta || {};
-    var hero = d.sections.filter(function (s) { return s.type === 'hero'; })[0];
-    return docHead(d, m.title, m.description, hero && hero.data.image && hero.data.image.src) + render(d, { noTheme: true }) + docEnd;
+    return docHead(d, m.title, m.description, '') + render(d, { noTheme: true }) + docEnd;
   }
   function legalDocument(data) {
     var d = normalize(data);
-    return docHead(d, d.legal.title + ' · ' + (d.meta.title || 'L\'Avenir Durable'), 'Mentions légales, données personnelles et cookies du site ' + (d.meta.title || ''), '').replace('<meta name="description"', '<meta name="robots" content="noindex">\n<meta name="description"') +
+    return docHead(d, d.legal.title + ' · ' + ((d.org && d.org.name) || 'L\'Avenir Durable'), 'Mentions légales, données personnelles et cookies du site ' + ((d.org && d.org.name) || 'L\'Avenir Durable') + '.', '', 'mentions-legales.html').replace('<meta name="description"', '<meta name="robots" content="noindex">\n<meta name="description"') +
       renderLegal(d, { noTheme: true }) + docEnd;
   }
 
@@ -745,6 +812,6 @@
     normalize: normalize, newSection: newSection, themeCSS: themeCSS, youtubeId: youtubeId, slugify: slugify,
     styleCSS: styleCSS, newBlock: newBlock, toFree: toFree, BLOCK_TYPES: BLOCK_TYPES, LAYOUTS: LAYOUTS, CONVERTIBLE: CONVERTIBLE,
     FONTS: FONTS, THEME_DEFAULT: THEME_DEFAULT, SECTION_TYPES: SECTION_TYPES, BACKGROUNDS: BACKGROUNDS, NETWORKS: NETWORKS,
-    esc: esc, longDate: longDate, parseDate: parseDate
+    esc: esc, longDate: longDate, parseDate: parseDate, siteUrl: siteUrl, sitemapXml: sitemapXml, robotsTxt: robotsTxt, jsonLd: jsonLd
   };
 });
