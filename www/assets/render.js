@@ -266,7 +266,7 @@
       cta: { title: 'Envie de participer ?', text: 'Une phrase pour convaincre.', button: { label: 'Participer à un atelier', href: '#contact-atelier' }, image: img('img/photos/potager-appel-action.webp') },
       text: { eyebrow: 'Sur-titre', title: 'Titre', text: 'Écrivez votre texte ici.\n\nLaissez une ligne vide pour commencer un nouveau paragraphe.' },
       join: { eyebrow: 'Participer', title: 'Rejoignez-nous', lead: 'Une phrase.', image: img('img/photos/terrain-potager.webp'), cardTitle: 'Titre de la carte', rows: [{ k: 'Information', v: '…' }], button: { label: 'Nous contacter', href: '#contact' }, note: '' },
-      contact: { eyebrow: 'Contact', title: 'Nous contacter', intro: '', items: [{ title: 'Poser une question', text: '', link: { label: 'Écrire un message', href: '#contact' } }, { title: 'Participer à un atelier', text: '', link: { label: 'Demander un atelier', href: '#contact-atelier' } }, { title: 'Partenariat ou bénévolat', text: '', link: { label: 'Proposer mon aide', href: '#contact-partenariat' } }] },
+      contact: { eyebrow: 'Contact', title: 'Nous contacter', intro: '', items: [{ title: 'Par message', text: 'Choisissez le motif dans le formulaire.', link: { label: 'Écrire un message', href: '#contact' } }, { title: 'Par téléphone', text: '', link: { label: 'Votre numéro', href: 'tel:+33600000000' } }] },
       faq: { eyebrow: 'Questions fréquentes', title: 'Vous vous demandez peut-être…', intro: '', items: [{ q: 'Votre question ?', a: 'La réponse, en quelques phrases.' }] }
     }[type];
     var label = SECTION_TYPES[type] ? SECTION_TYPES[type].name : 'Section';

@@ -1408,7 +1408,17 @@
     api('session').then(function (j) {
       if (j.logged) return afterLogin(j);
       showLogin();
-    }).catch(function (err) { showLogin(friendly(err)); });
+    }).catch(function (err) {
+      // Pas de PHP (GitHub Pages, fichier ouvert directement) : on explique où se trouve l'administration
+      if (err.status === 404 || err.status === 405 || /\.github\.io$/i.test(location.hostname) || location.protocol === 'file:') {
+        $('pw-form').querySelectorAll('input, button').forEach(function (el) { el.disabled = true; });
+        $('login-intro').innerHTML = 'L\'administration a besoin de PHP : elle ne fonctionne pas sur cette adresse (GitHub Pages).<br><br>' +
+          '<b>Pour modifier le site :</b> sur votre ordinateur, double-cliquez sur <code>lancer-en-local.bat</code>, puis ouvrez <code>http://localhost:8000/admin/</code>. ' +
+          'Une fois le site installé chez un hébergeur PHP (par exemple OVH), l\'administration sera à l\'adresse <code>/admin/</code> du site.';
+        return showLogin('Administration indisponible sur cet hébergement.');
+      }
+      showLogin(friendly(err));
+    });
   }
 
   init();

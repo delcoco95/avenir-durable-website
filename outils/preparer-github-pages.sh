@@ -5,15 +5,13 @@ set -euo pipefail
 OUT="${1:-_site}"
 rm -rf "$OUT" && mkdir -p "$OUT"
 cp -r www/. "$OUT"/
-rm -rf "$OUT/admin" "$OUT/assets/admin"
+# L'administration a besoin de PHP : la page est publiée (elle explique comment l'ouvrir en local), jamais le programme api.php
+rm -f "$OUT/admin/api.php"
+rm -rf "$OUT/admin/data"
 # Pas de PHP sur GitHub Pages : le formulaire de contact passe par FormSubmit (voir assets/site.js)
 rm -f "$OUT/contact.php"
 find "$OUT" -name '.htaccess' -delete
 cp "$OUT/accueil.html" "$OUT/index.html"
 [ -f "$OUT/mentions-legales.html" ] || cp "$OUT/mentions-legales-initial.html" "$OUT/mentions-legales.html"
-# Pas d'administration sur cette version : on retire le lien du pied de page
-for f in "$OUT/index.html" "$OUT/accueil.html" "$OUT/mentions-legales.html"; do
-  sed -i 's#<a class="admin-link"[^>]*>[^<]*</a>##' "$f"
-done
 touch "$OUT/.nojekyll"
 echo "Site statique prêt dans $OUT"

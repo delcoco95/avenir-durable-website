@@ -17,6 +17,7 @@ async function t(name, fn) {
 function ok(cond, msg) { if (!cond) throw new Error(msg || 'condition fausse'); }
 const mails = () => (fs.existsSync(MAILS) ? fs.readFileSync(MAILS, 'utf8').split('=====FIN=====').filter(s => s.trim()) : []);
 const sleep = ms => new Promise(r => setTimeout(r, ms));
+const motif = p => p.evaluate(() => { const r = document.querySelector('#contact-modal input[name="motif-choix"]:checked'); return r ? r.value : ''; });
 
 (async () => {
   const browser = await chromium.launch();
@@ -70,25 +71,30 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   });
 
   console.log('\nFenêtre de contact');
-  await t('le bouton du menu ouvre la fenêtre (motif Question)', async () => {
+  await t('le bouton du menu ouvre la fenêtre (motif à choisir)', async () => {
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.click('.menu-cta a');
     await page.waitForSelector('#contact-modal[open]');
-    ok(await page.inputValue('#cm-motif') === 'question');
-    ok(await page.evaluate(() => document.activeElement.id) === 'cm-nom', 'focus sur le nom');
+    ok(await motif(page) === '', 'aucun motif coché');
+    ok(await page.evaluate(() => document.activeElement.name) === 'motif-choix', 'focus sur le motif');
     await page.keyboard.press('Escape');
     await page.waitForSelector('#contact-modal:not([open])', { state: 'attached' });
   });
   await t('« Participer à un atelier » ouvre le motif Atelier', async () => {
     await page.click('#participer .btn');
     await page.waitForSelector('#contact-modal[open]');
-    ok(await page.inputValue('#cm-motif') === 'atelier');
+    ok(await motif(page) === 'atelier');
+    ok(await page.evaluate(() => document.activeElement.id) === 'cm-nom', 'focus sur le nom');
     await page.click('#contact-modal .cm-close');
   });
-  await t('section Contact : motif Partenariat, fermeture en cliquant à côté', async () => {
-    await page.click('#contact a[href="#contact-partenariat"]');
+  await t('section Contact : 2 boutons, motif choisi dans la fenêtre, fermeture en cliquant à côté', async () => {
+    ok((await page.$$('#contact .ct-link')).length === 2, 'deux boutons');
+    ok(await page.getAttribute('#contact .ct-link >> nth=1', 'href') === 'tel:+33643215535', 'téléphone');
+    await page.click('#contact .ct-link >> nth=0');
     await page.waitForSelector('#contact-modal[open]');
-    ok(await page.inputValue('#cm-motif') === 'partenariat');
+    await page.click('#contact-modal .cm-reason:has(input[value=partenariat])');
+    ok(await motif(page) === 'partenariat', 'motif partenariat');
+    ok(/structure/.test(await page.textContent('#cm-message-hint')), 'aide adaptée au motif');
     await page.mouse.click(5, 5);
     await page.waitForSelector('#contact-modal:not([open])', { state: 'attached' });
   });
@@ -97,7 +103,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     await page.waitForSelector('#contact-modal[open]');
     await page.click('[data-cm-send]');
     const invalid = await page.$$eval('#contact-modal [aria-invalid=true]', l => l.map(x => x.name));
-    ok(['nom', 'email', 'objet', 'message', 'consentement'].every(n => invalid.includes(n)), invalid.join());
+    ok(['motif', 'nom', 'email', 'objet', 'message', 'consentement'].every(n => invalid.includes(n)), invalid.join());
     await page.fill('#cm-email', 'pas-une-adresse');
     await page.click('[data-cm-send]');
     ok(/adresse e-mail valide/.test(await page.textContent('#cm-email-err')), 'message e-mail');
@@ -106,7 +112,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     const before = mails().length;
     await page.fill('#cm-nom', 'Camille Test');
     await page.fill('#cm-email', 'camille@example.org');
-    await page.selectOption('#cm-motif', 'atelier');
+    await page.click('#contact-modal .cm-reason:has(input[value=atelier])');
     await page.fill('#cm-objet', 'Atelier pour une classe de CM1');
     await page.fill('#cm-message', 'Bonjour, nous aimerions un atelier zéro déchet en mars.\n.\nLigne après un point seul.');
     await page.check('#cm-consent');
@@ -126,7 +132,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     const p2 = await ctx.newPage();
     await p2.goto(BASE + '/accueil.html#contact-atelier');
     await p2.waitForSelector('#contact-modal[open]');
-    ok(await p2.inputValue('#cm-motif') === 'atelier');
+    ok(await motif(p2) === 'atelier');
     await p2.close();
   });
 
@@ -226,6 +232,33 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     });
   }
 
+  for (const [w, h] of [[1366, 768], [375, 812]]) {
+    await t('largeur ' + w + ' px : les liens et boutons descendent au début de la bonne section', async () => {
+      const p = await browser.newPage({ viewport: { width: w, height: h } });
+      await p.goto(BASE + '/', { waitUntil: 'load' });
+      const links = await p.$$eval('#menu a[href^="#"]:not(.btn), .hero .btn', l => l.map(a => a.getAttribute('href')));
+      ok(links.length >= 5, 'liens');
+      const bad = [];
+      for (const href of links) {
+        await p.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+        await p.waitForTimeout(150);
+        const inMenu = await p.$eval(`a[href="${href}"]`, a => !!a.closest('#menu'));
+        if (inMenu && w < 960) { await p.click('#burger'); await p.waitForTimeout(350); }
+        await p.click(inMenu ? `#menu a[href="${href}"]` : `.hero a[href="${href}"]`);
+        await p.waitForTimeout(1600);
+        const r = await p.evaluate(sel => {
+          const sec = document.querySelector(sel), hd = document.querySelector('.top').getBoundingClientRect().bottom;
+          const title = sec.querySelector('h2:not(.sr)');
+          return { sec: sec.getBoundingClientRect().top, title: title.getBoundingClientRect().top, hd };
+        }, href);
+        // le titre doit être visible juste sous l'en-tête, sans grand vide au-dessus de la section
+        if (r.title < r.hd || r.title > r.hd + 220) bad.push(href + ' ' + JSON.stringify(r));
+      }
+      ok(!bad.length, bad.join(' ; '));
+      await p.close();
+    });
+  }
+
   console.log('\nAdministration');
   await t('connexion, mot de passe imposé, réglages SEO et publication', async () => {
     const a = await ctx.newPage();
@@ -259,9 +292,16 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   });
 
   console.log('\nVersion GitHub Pages (sans PHP)');
-  await t('pas de contact.php ni d’administration', async () => {
+  await t('pas de contact.php ni d’api.php ; page d’administration explicative', async () => {
     ok((await ctx.request.get(PAGES + '/contact.php')).status() === 404, 'contact.php');
-    ok((await ctx.request.get(PAGES + '/admin/')).status() === 404, 'admin');
+    ok((await ctx.request.get(PAGES + '/admin/api.php')).status() === 404, 'api.php publié !');
+    const p = await browser.newPage();
+    await p.goto(PAGES + '/', { waitUntil: 'load' });
+    await p.click('footer .admin-link');
+    await p.waitForSelector('#pw-error:not([hidden])');
+    ok(/lancer-en-local\.bat/.test(await p.textContent('#login-intro')), 'explication');
+    ok(await p.isDisabled('#pw-btn'), 'connexion désactivée');
+    await p.close();
   });
   await t('formulaire envoyé à FormSubmit quand PHP est absent', async () => {
     const p = await browser.newPage();

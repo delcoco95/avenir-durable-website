@@ -65,7 +65,9 @@ Le fichier `www/.htaccess` force le HTTPS, retire le « www », bloque l'accès 
 
 ## Formulaire de contact
 
-Les boutons qui pointent vers `#contact`, `#contact-atelier` ou `#contact-partenariat` ouvrent une fenêtre avec le motif correspondant (Question, Participer à un atelier, Partenariat ou bénévolat). Le lien « Contact » du menu, lui, descend simplement à la section Contact.
+Les boutons qui pointent vers `#contact` ouvrent une fenêtre où l'on choisit le motif (Question, Participer à un atelier, Partenariat ou bénévolat) ; `#contact-atelier` et `#contact-partenariat` l'ouvrent avec le motif déjà coché (ex. bouton « Participer à un atelier »). La section Contact n'a que deux boutons : « Écrire un message » et le téléphone. Le lien « Contact » du menu, lui, descend simplement à la section Contact.
+
+Sur GitHub Pages, le bouton « Espace administration » du pied de page ouvre une page qui explique que l'administration a besoin de PHP (en local avec `lancer-en-local.bat`, ou chez OVH) ; `api.php` n'y est jamais publié.
 
 - **Hébergement PHP (OVH) ou en local** : le message est envoyé par `www/contact.php`. Réglages dans `.env` (voir `.env.example`) : `CONTACT_TO` (destinataire), et de préférence un serveur d'envoi `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASSWORD`. Sans `SMTP_HOST`, la fonction `mail()` de l'hébergeur est utilisée.
 - **GitHub Pages (sans PHP)** : le message passe par le service gratuit FormSubmit, sans clé secrète. **Au premier envoi, FormSubmit envoie un e-mail de confirmation à avenirdurable@ecomail.fr : il faut cliquer une fois sur le lien d'activation**, sinon les messages ne sont pas transmis.

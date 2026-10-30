@@ -47,8 +47,8 @@
         },
         "note": "",
         "image": {
-          "src": "img/photos/animation-jardin-partage.webp",
-          "alt": "Animation de L'Avenir Durable au jardin partagé : de jeunes enfants découvrent les bacs de culture avec leurs accompagnatrices."
+          "src": "img/photos/foret-lumiere.webp",
+          "alt": "Forêt de pins traversée par la lumière du soleil."
         },
         "caption": ""
       }
@@ -353,7 +353,7 @@
           },
           {
             "q": "Comment devenir bénévole ou proposer un partenariat ?",
-            "a": "Choisissez le motif « Partenariat ou bénévolat » dans le formulaire de contact et présentez-nous votre structure ou vos envies."
+            "a": "Cliquez sur « Écrire un message » et choisissez le motif « Partenariat ou bénévolat » : présentez-nous votre structure ou vos envies."
           },
           {
             "q": "Que deviennent les informations envoyées avec le formulaire ?",
@@ -398,30 +398,14 @@
       "data": {
         "eyebrow": "Contact",
         "title": "Parlons de votre projet",
-        "intro": "Une question, une envie de participer, une idée de partenariat ? Choisissez votre motif : le formulaire s'ouvre directement.",
+        "intro": "Une question, une envie de participer à un atelier, une idée de partenariat ou de bénévolat ? Écrivez-nous ou appelez-nous.",
         "items": [
           {
-            "title": "Poser une question",
-            "text": "Sur le projet, les thèmes ou les formats.",
+            "title": "Par message",
+            "text": "Question, atelier, partenariat ou bénévolat : choisissez le motif dans le formulaire.",
             "link": {
               "label": "Écrire un message",
               "href": "#contact"
-            }
-          },
-          {
-            "title": "Participer à un atelier",
-            "text": "Indiquez votre ville et le public concerné.",
-            "link": {
-              "label": "Demander un atelier",
-              "href": "#contact-atelier"
-            }
-          },
-          {
-            "title": "Partenariat ou bénévolat",
-            "text": "Présentez-nous votre structure ou vos envies.",
-            "link": {
-              "label": "Proposer mon aide",
-              "href": "#contact-partenariat"
             }
           },
           {

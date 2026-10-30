@@ -117,10 +117,14 @@
   if (m) m.addEventListener('click', function (e) { if (e.target.closest('a')) document.documentElement.style.overflow = ''; });
 
   /* ---------- Formulaire de contact (fenêtre modale) ----------
-   * Les boutons qui pointent vers #contact, #contact-atelier ou #contact-partenariat ouvrent la fenêtre avec le bon motif.
+   * Les boutons qui pointent vers #contact (motif à choisir), #contact-atelier ou #contact-partenariat (motif déjà coché) ouvrent la fenêtre.
    * Envoi : contact.php sur un hébergement PHP (OVH, local) ; sur GitHub Pages (sans PHP), service FormSubmit. */
-  var REASONS = [['question', 'Question'], ['atelier', 'Participer à un atelier'], ['partenariat', 'Partenariat ou bénévolat']];
-  var HASH_REASON = { '#contact': 'question', '#contact-question': 'question', '#contact-atelier': 'atelier', '#contact-partenariat': 'partenariat' };
+  var REASONS = [
+    ['question', 'Question', 'Sur le projet, les thèmes ou les formats', 'Votre question sur le projet, les thèmes ou les formats.', 'Ex. : Les ateliers sont-ils ouverts aux familles ?'],
+    ['atelier', 'Participer à un atelier', 'Particulier, école, entreprise, collectivité', 'Précisez votre ville, le public concerné (enfants, classe, adultes, salariés…), le nombre de personnes et vos disponibilités.', 'Ex. : Atelier zéro déchet pour une classe de CE2'],
+    ['partenariat', 'Partenariat ou bénévolat', 'Structure partenaire ou envie d\'aider', 'Présentez votre structure ou vos envies, et vos disponibilités si vous souhaitez être bénévole.', 'Ex. : Proposition de partenariat avec notre association']
+  ];
+  var HASH_REASON = { '#contact': '', '#contact-question': 'question', '#contact-atelier': 'atelier', '#contact-partenariat': 'partenariat' };
   var contactEmail = document.body.getAttribute('data-contact') || '';
   var dlg = null, mode = null, token = '', openedAt = 0, lastTrigger = null, prep = Promise.resolve();
   var MIN_DELAY = 3000, LIMIT = 3, LIMIT_WINDOW = 10 * 60 * 1000;
@@ -134,20 +138,23 @@
   function escHtml(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function buildDialog() {
     dlg = el('dialog', { 'class': 'cmodal', id: 'contact-modal', 'aria-labelledby': 'cm-title', 'aria-describedby': 'cm-intro' });
-    var opts = REASONS.map(function (r) { return '<option value="' + r[0] + '">' + r[1] + '</option>'; }).join('');
+    var opts = REASONS.map(function (r) {
+      return '<label class="cm-reason"><input type="radio" name="motif-choix" value="' + r[0] + '"><span><b>' + r[1] + '</b><small>' + r[2] + '</small></span></label>';
+    }).join('');
     dlg.innerHTML =
       '<div class="cm-box">' +
       '<button type="button" class="cm-close" data-cm-close aria-label="Fermer la fenêtre"><span aria-hidden="true"></span></button>' +
       '<p class="eyebrow">Contact</p><h2 id="cm-title">Écrivez-nous</h2>' +
       '<p class="cm-intro" id="cm-intro">Tous les champs sont obligatoires. Nous vous répondons par e-mail.</p>' +
       '<div class="cm-form" role="form" aria-label="Formulaire de contact">' +
+      '<fieldset class="cm-field cm-reasons" id="cm-motif" name="motif" aria-describedby="cm-motif-err"><legend>Votre demande concerne</legend><div class="cm-reason-list">' + opts + '</div><p class="cm-err" id="cm-motif-err"></p></fieldset>' +
       '<div class="cm-grid">' +
       '<div class="cm-field"><label for="cm-nom">Nom et prénom</label><input id="cm-nom" name="nom" type="text" autocomplete="name" maxlength="100" required aria-describedby="cm-nom-err"><p class="cm-err" id="cm-nom-err"></p></div>' +
       '<div class="cm-field"><label for="cm-email">Adresse e-mail</label><input id="cm-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="200" required aria-describedby="cm-email-err"><p class="cm-err" id="cm-email-err"></p></div>' +
       '</div>' +
-      '<div class="cm-field"><label for="cm-motif">Motif</label><select id="cm-motif" name="motif" required aria-describedby="cm-motif-err">' + opts + '</select><p class="cm-err" id="cm-motif-err"></p></div>' +
+
       '<div class="cm-field"><label for="cm-objet">Objet</label><input id="cm-objet" name="objet" type="text" maxlength="150" required aria-describedby="cm-objet-err"><p class="cm-err" id="cm-objet-err"></p></div>' +
-      '<div class="cm-field"><label for="cm-message">Message</label><textarea id="cm-message" name="message" rows="6" maxlength="5000" required aria-describedby="cm-message-hint cm-message-err"></textarea><p class="cm-hint" id="cm-message-hint">Pour un atelier : précisez votre ville, le public concerné et vos disponibilités.</p><p class="cm-err" id="cm-message-err"></p></div>' +
+      '<div class="cm-field"><label for="cm-message">Message</label><textarea id="cm-message" name="message" rows="6" maxlength="5000" required aria-describedby="cm-message-hint cm-message-err"></textarea><p class="cm-hint" id="cm-message-hint">Choisissez d\'abord le motif de votre demande.</p><p class="cm-err" id="cm-message-err"></p></div>' +
       '<div class="cm-hp" aria-hidden="true"><label for="cm-site">Laissez ce champ vide</label><input id="cm-site" name="site_web" type="text" tabindex="-1" autocomplete="off"></div>' +
       '<div class="cm-field cm-check"><input id="cm-consent" name="consentement" type="checkbox" required aria-describedby="cm-consent-err"><label for="cm-consent">J\'accepte que mes informations servent uniquement à répondre à ma demande (voir les <a href="mentions-legales.html#donnees-personnelles" target="_blank" rel="noopener">mentions légales</a>).</label><p class="cm-err" id="cm-consent-err"></p></div>' +
       '<p class="cm-status" role="status" aria-live="polite"></p>' +
@@ -161,12 +168,23 @@
     });
     dlg.addEventListener('close', function () { document.documentElement.classList.remove('cm-open'); if (lastTrigger && lastTrigger.focus) lastTrigger.focus(); });
     dlg.querySelector('[data-cm-send]').addEventListener('click', send);
-    dlg.querySelectorAll('input, select, textarea').forEach(function (f) {
+    dlg.querySelectorAll('input[name="motif-choix"]').forEach(function (r) {
+      r.addEventListener('change', function () { applyReason(); validate(field('motif')); });
+    });
+    dlg.querySelectorAll('input:not([type=radio]), select, textarea').forEach(function (f) {
       f.addEventListener('input', function () { if (f.getAttribute('aria-invalid') === 'true') validate(f); });
       if (f.tagName !== 'TEXTAREA') f.addEventListener('keydown', function (e) { if (e.key === 'Enter' && f.type !== 'checkbox') { e.preventDefault(); send(); } });
     });
   }
   function field(n) { return dlg.querySelector('[name="' + n + '"]'); }
+  function reasonVal() { var r = dlg.querySelector('input[name="motif-choix"]:checked'); return r ? r.value : ''; }
+  function setReason(v) { dlg.querySelectorAll('input[name="motif-choix"]').forEach(function (r) { r.checked = r.value === v; }); applyReason(); }
+  /* Aide et exemple adaptés au motif choisi */
+  function applyReason() {
+    var r = REASONS.filter(function (x) { return x[0] === reasonVal(); })[0];
+    dlg.querySelector('#cm-message-hint').textContent = r ? r[3] : 'Choisissez d\'abord le motif de votre demande.';
+    field('objet').placeholder = r ? r[4] : '';
+  }
   function setErr(f, msg) {
     var err = dlg.querySelector('#' + f.id + '-err');
     f.setAttribute('aria-invalid', msg ? 'true' : 'false');
@@ -174,10 +192,10 @@
     return !msg;
   }
   function validate(f) {
-    var v = f.type === 'checkbox' ? f.checked : f.value.trim(), n = f.name;
+    var n = f.getAttribute('name'), v = n === 'motif' ? reasonVal() : (f.type === 'checkbox' ? f.checked : f.value.trim());
     if (n === 'nom') return setErr(f, v.length < 2 ? 'Indiquez votre nom.' : '');
     if (n === 'email') return setErr(f, !/^[^\s@<>,;"]+@[^\s@<>,;"]+\.[a-z]{2,}$/i.test(v) ? 'Indiquez une adresse e-mail valide, par exemple nom@exemple.fr.' : '');
-    if (n === 'motif') return setErr(f, !HASH_REASON['#contact-' + v] && v !== 'question' ? 'Choisissez un motif.' : '');
+    if (n === 'motif') return setErr(f, !v ? 'Choisissez le motif de votre demande.' : '');
     if (n === 'objet') return setErr(f, v.length < 3 ? 'Indiquez l\'objet de votre message.' : '');
     if (n === 'message') return setErr(f, v.length < 10 ? 'Écrivez votre message (10 caractères au moins).' : '');
     if (n === 'consentement') return setErr(f, !v ? 'Cochez cette case pour que nous puissions vous répondre.' : '');
@@ -215,13 +233,13 @@
     dlg.querySelector('.cm-form').hidden = false;
     dlg.querySelector('.cm-done').hidden = true;
     status('');
-    field('motif').value = reason || 'question';
+    setReason(reason || '');
     dlg.querySelectorAll('[aria-invalid]').forEach(function (f) { setErr(f, ''); });
     openedAt = Date.now();
     prep = prepare();
     if (typeof dlg.showModal === 'function') { if (!dlg.open) dlg.showModal(); } else dlg.setAttribute('open', '');
     document.documentElement.classList.add('cm-open');
-    setTimeout(function () { var first = field('nom'); if (first) first.focus(); }, 30);
+    setTimeout(function () { var first = reason ? field('nom') : dlg.querySelector('input[name="motif-choix"]'); if (first) first.focus(); }, 30);
   }
   function closeContact() {
     if (!dlg) return;
@@ -232,12 +250,12 @@
     if (sending) return;
     var names = ['nom', 'email', 'motif', 'objet', 'message', 'consentement'], ok = true, firstBad = null;
     names.forEach(function (n) { var f = field(n); if (!validate(f)) { ok = false; firstBad = firstBad || f; } });
-    if (!ok) { status('Vérifiez les champs signalés.', true); firstBad.focus(); return; }
+    if (!ok) { status('Vérifiez les champs signalés.', true); (firstBad.getAttribute('name') === 'motif' ? firstBad.querySelector('input') : firstBad).focus(); return; }
     if (field('site_web').value) { done(); return; } // robot : on fait comme si
     var wait = MIN_DELAY - (Date.now() - openedAt);
     if (wait > 0) { status('Un instant…'); setTimeout(send, wait); return; }
     if (recentSends().length >= LIMIT) { status('Vous avez déjà envoyé plusieurs messages. Réessayez dans quelques minutes.' + fallbackText(), true); return; }
-    var v = function (n) { return field(n).value.trim(); };
+    var v = function (n) { return n === 'motif' ? reasonVal() : field(n).value.trim(); };
     var reasonLabel = REASONS.filter(function (r) { return r[0] === v('motif'); })[0][1];
     var btn = dlg.querySelector('[data-cm-send]');
     sending = true; btn.disabled = true; status('Envoi en cours…');
@@ -254,7 +272,7 @@
         body: JSON.stringify({ nom: v('nom'), email: v('email'), motif: v('motif'), objet: v('objet'), message: v('message'), consentement: field('consentement').checked, site_web: field('site_web').value, token: token })
       }).then(function (r) { return r.json().catch(function () { return { ok: false }; }); }).then(function (j) {
         if (j && j.ok) return;
-        if (j && j.field && field(j.field)) { setErr(field(j.field), j.error); field(j.field).focus(); }
+        if (j && j.field && field(j.field)) { setErr(field(j.field), j.error); (j.field === 'motif' ? field('motif').querySelector('input') : field(j.field)).focus(); }
         throw new Error((j && j.error) || 'Le message n\'a pas pu être envoyé.');
       });
     } else {
@@ -271,6 +289,7 @@
   }
   function done() {
     ['nom', 'email', 'objet', 'message'].forEach(function (n) { field(n).value = ''; });
+    setReason('');
     field('consentement').checked = false;
     dlg.querySelector('.cm-form').hidden = true;
     var box = dlg.querySelector('.cm-done');
@@ -282,7 +301,7 @@
     var i = h.indexOf('#');
     if (i < 0) return null;
     var path = h.slice(0, i), hash = h.slice(i);
-    if (!HASH_REASON[hash]) return null;
+    if (!(hash in HASH_REASON)) return null;
     if (path && !/(^|\/)(accueil\.html|index\.html)?$/.test(path)) return null;
     if (path && !document.getElementById('contact')) return null; // depuis une autre page : on suit le lien
     return HASH_REASON[hash];
@@ -291,7 +310,7 @@
     var a = e.target.closest && e.target.closest('a.btn, a.ct-link, a[data-contact-open]');
     if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
     var r = reasonFromHref(a);
-    if (!r) return;
+    if (r == null) return;
     e.preventDefault();
     if (m && m.classList.contains('open')) { m.classList.remove('open'); if (b) b.setAttribute('aria-expanded', 'false'); document.documentElement.style.overflow = ''; }
     openContact(r, a);
