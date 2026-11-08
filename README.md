@@ -47,7 +47,7 @@ Sur Mac ou Linux : `php -S localhost:8000 -t www outils/routeur-local.php`
 
 Place : 100 Mo en tout (le site en occupe environ 6). Photos et vidéos ajoutées depuis l'administration : 40 Mo en tout, 25 Mo par vidéo.
 
-L'ancienne adresse GitHub Pages renvoie automatiquement vers avenirdurable.fr (`outils/preparer-github-pages.sh`, lancé par `.github/workflows/pages.yml`).
+Le dépôt GitHub sert uniquement de copie du code : le site n'y est plus publié (GitHub Pages désactivé).
 
 ## Sécurité
 
@@ -72,7 +72,7 @@ Le message est envoyé par `www/contact.php` à l'adresse « E-mail qui reçoit 
 
 ## Tests automatiques
 
-`bash tests/lancer-tests.sh` (Linux, macOS ou WSL ; PHP, Node.js, Python 3 et Playwright requis) lance une trentaine de vérifications sur une copie temporaire du site, avec un faux serveur d'e-mails : page publique et SEO, fenêtre de contact, envoi et protections de `contact.php`, fichiers privés, administration (connexion, mot de passe, publication), page de redirection GitHub Pages, affichage en 375, 768, 1366 et 1920 px, console du navigateur. Vos fichiers `.env` et vos données ne sont pas touchés.
+`bash tests/lancer-tests.sh` (Linux, macOS ou WSL ; PHP, Node.js, Python 3 et Playwright requis) lance une trentaine de vérifications sur une copie temporaire du site, avec un faux serveur d'e-mails : page publique et SEO, fenêtre de contact, envoi et protections de `contact.php`, fichiers privés, administration (connexion, mot de passe, publication), affichage en 375, 768, 1366 et 1920 px, console du navigateur. Vos fichiers `.env` et vos données ne sont pas touchés.
 
 ## Contenus à valider avec l'association
 

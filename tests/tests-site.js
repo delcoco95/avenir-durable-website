@@ -1,12 +1,11 @@
 /*
  * Tests automatiques du site (Playwright). Lancés par tests/lancer-tests.sh, qui prépare :
  *  - une copie du site servie par PHP (BASE), avec un .env de test et un faux serveur SMTP (MAILS = fichier des messages reçus) ;
- *  - la page de redirection de l'ancienne adresse GitHub Pages (PAGES).
- * Usage : node tests/tests-site.js BASE MAILS PAGES DOSSIER_CAPTURES
+ * Usage : node tests/tests-site.js BASE MAILS DOSSIER_CAPTURES
  */
 const { chromium } = require('playwright');
 const fs = require('fs');
-const [BASE, MAILS, PAGES, SHOTS] = process.argv.slice(2);
+const [BASE, MAILS, SHOTS] = process.argv.slice(2);
 const ADMIN_USER = 'test-admin', ADMIN_PASS = 'mot-de-passe-de-depart', NEW_PASS = 'Nouveau-Mot-De-Passe-2026!';
 
 let passed = 0, failed = 0;
@@ -289,14 +288,6 @@ const motif = p => p.evaluate(() => { const r = document.querySelector('#contact
     ok(/google-site-verification" content="AbCdEf0123456789_test"/.test(html), 'vérification Search Console');
     ok(/sitemap\.xml/.test(await (await ctx.request.get(BASE + '/robots.txt')).text()), 'robots après publication');
     await a.close();
-  });
-
-  console.log('\nAncienne adresse GitHub Pages');
-  await t('la page GitHub Pages renvoie vers avenirdurable.fr', async () => {
-    const html = await (await ctx.request.get(PAGES + '/')).text();
-    ok(/http-equiv="refresh" content="0; url=https:\/\/avenirdurable\.fr\/"/.test(html), 'redirection');
-    ok(/rel="canonical" href="https:\/\/avenirdurable\.fr\/"/.test(html), 'canonique');
-    ok((await ctx.request.get(PAGES + '/admin/api.php')).status() === 404, 'aucun fichier du site publié');
   });
 
   await t('aucune erreur dans la console du navigateur', async () => {
