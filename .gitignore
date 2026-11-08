@@ -21,3 +21,6 @@ _site/
 
 # Code de transfert du nom de domaine : ne jamais publier
 *transfer*.txt
+
+# Guide du site (confidentiel)
+DOCS Avenir Durable/
