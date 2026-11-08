@@ -1,14 +1,10 @@
 # L'Avenir Durable — site vitrine
 
-Site d'une page pour **L'Avenir Durable** (sensibilisation aux enjeux environnementaux et au développement durable), avec un **espace d'administration** pour tout modifier sans connaissances techniques : textes, photos, vidéos, sections, couleurs, mentions légales.
+Site d'une page pour **L'Avenir Durable** — en ligne sur **https://avenirdurable.fr** (hébergement OVHcloud) (sensibilisation aux enjeux environnementaux et au développement durable), avec un **espace d'administration** pour tout modifier sans connaissances techniques : textes, photos, vidéos, sections, couleurs, mentions légales.
 
 - **HTML, CSS et JavaScript sans framework.** Les pages publiées sont de simples fichiers HTML, rapides et sans base de données.
 - **Un seul fichier PHP** (`www/admin/api.php`), utilisé uniquement par l'administration pour la connexion et la publication.
 - Le contenu est rangé dans `www/content/site.json`. Le bouton **Publier** régénère `www/accueil.html` et `www/mentions-legales.html`.
-
-## Voir le site
-
-**Sans rien installer** : double-cliquez sur `ouvrir-le-site.html` (ou sur `www/accueil.html`). Le site public s'ouvre dans le navigateur.
 
 ## Tester l'administration sur son ordinateur (Windows)
 
@@ -32,7 +28,7 @@ Sur Mac ou Linux : `php -S localhost:8000 -t www outils/routeur-local.php`
 - **Couleurs** : vert du logo, vert forêt profond, jaune pollen pour les boutons, fond papier clair.
 - **Logo** : le logo d'origine a été détouré (fond transparent). Il existe en vert (`img/logo.webp`) et en clair pour les fonds sombres (`img/logo-clair.webp`).
 - **Mise en page** : une grande photo d'accueil en plein écran avec l'en-tête transparent, un bandeau de mots défilant, et les actions en grandes lignes illustrées sur fond sombre. Viennent ensuite une mosaïque de photos, les questions fréquentes sur deux colonnes, un appel à l'action sur photo et un pied de page avec le nom en très grand.
-- **Photos** : Unsplash et Pixabay, libres de droits pour un usage commercial ou non, sans attribution obligatoire. Les auteurs sont tout de même crédités dans les mentions légales. La photo de l'atelier au potager vient du site de l'association.
+- **Photos** : photos des ateliers de l'association, plus trois photos libres de droits (forêt, plage, panneaux solaires) créditées dans les mentions légales.
 
 ## Utiliser l'administration
 
@@ -42,16 +38,16 @@ Sur Mac ou Linux : `php -S localhost:8000 -t www outils/routeur-local.php`
 - **Sécurité** : changement du mot de passe, double authentification par code à 6 chiffres, journal des connexions.
 - Rien n'est en ligne tant que vous n'avez pas cliqué sur **Publier**. Une sauvegarde de la version précédente est gardée à chaque publication (dossier `avenir-data/backups`, hors du site).
 
-## Mettre en ligne (OVHcloud, hébergement gratuit 100 Mo lié à avenirdurable.fr)
+## Mettre en ligne (OVHcloud, hébergement gratuit 100 Mo `avenina`)
 
-L'offre gratuite n'a pas de SSH : l'envoi se fait en FTP chiffré (FTPS) avec `envoyer-sur-ovh.bat`, qui utilise `outils/envoyer-ftp.ps1` (PowerShell, déjà présent sur Windows).
+1. Lancer `envoyer-sur-ovh.bat` (SFTP, compte `avenina` sur `ssh.cluster129.hosting.ovh.net`, mot de passe choisi dans OVHcloud › Hébergements › onglet FTP - SSH).
+2. Choix **1** la première fois (tout le site + `.env`), choix **2** ensuite (programme seulement, sans écraser ce qui a été modifié dans l'administration).
+3. Sur l'hébergement : le site est dans `www/`, `.env` et `avenir-data/` sont à côté, hors de portée des visiteurs.
+4. https://avenirdurable.fr/admin/ : à la première connexion, un nouveau mot de passe est demandé.
 
-1. Dans `envoyer-sur-ovh.bat`, renseigner `HOTE` (serveur FTP, ex. `ftp.clusterXXX.hosting.ovh.net`) et `COMPTE` (identifiant FTP), visibles dans l'espace client OVH › Hébergements › onglet FTP-SSH.
-2. Lancer `node build.js` (met à jour les listes d'envoi), puis `envoyer-sur-ovh.bat`, choix **1** la première fois (tout le site + `.env`), choix **2** ensuite (programme seulement, sans écraser ce qui a été modifié dans l'administration).
-3. Le site est dans le dossier `www` de l'hébergement ; `.env` et `avenir-data/` sont à côté, hors de portée des visiteurs.
-4. Ouvrir https://avenirdurable.fr/admin/ : à la première connexion, un nouveau mot de passe est demandé.
+Place : 100 Mo en tout (le site en occupe environ 6). Photos et vidéos ajoutées depuis l'administration : 40 Mo en tout, 25 Mo par vidéo.
 
-Place disponible : 100 Mo en tout (le site en occupe environ 6). Les photos et vidéos ajoutées depuis l'administration sont limitées à 40 Mo, et chaque vidéo à 25 Mo.
+L'ancienne adresse GitHub Pages renvoie automatiquement vers avenirdurable.fr (`outils/preparer-github-pages.sh`, lancé par `.github/workflows/pages.yml`).
 
 ## Sécurité
 
@@ -64,24 +60,19 @@ Place disponible : 100 Mo en tout (le site en occupe environ 6). Les photos et v
 
 ## Formulaire de contact
 
-Les boutons qui pointent vers `#contact` ouvrent une fenêtre où l'on choisit le motif (Question, Participer à un atelier, Partenariat ou bénévolat) ; `#contact-atelier` et `#contact-partenariat` l'ouvrent avec le motif déjà coché (ex. bouton « Participer à un atelier »). La section Contact n'a que deux boutons : « Écrire un message » et le téléphone. Le lien « Contact » du menu, lui, descend simplement à la section Contact.
+« Écrire un message » (et les boutons vers `#contact`) ouvre une fenêtre où l'on choisit le motif : Question, Participer à un atelier, Partenariat ou bénévolat. `#contact-atelier` et `#contact-partenariat` l'ouvrent avec le motif déjà coché.
 
-Sur GitHub Pages, le bouton « Espace administration » du pied de page ouvre une page qui explique que l'administration a besoin de PHP (en local avec `lancer-en-local.bat`, ou chez OVH) ; `api.php` n'y est jamais publié.
-
-- **Hébergement PHP (OVH) ou en local** : le message est envoyé par `www/contact.php`. Réglages dans `.env` (voir `.env.example`) : `CONTACT_TO` (destinataire), et de préférence un serveur d'envoi `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASSWORD`. Sans `SMTP_HOST`, la fonction `mail()` de l'hébergeur est utilisée.
-- **GitHub Pages (sans PHP)** : le message passe par le service gratuit FormSubmit, sans clé secrète. **Au premier envoi, FormSubmit envoie un e-mail de confirmation à avenirdurable@ecomail.fr : il faut cliquer une fois sur le lien d'activation**, sinon les messages ne sont pas transmis.
-- Le choix est automatique : si `contact.php` ne répond pas, le site utilise FormSubmit.
-- L'adresse de réception se règle dans l'administration (bouton Apparence › « Coordonnées »).
+Le message est envoyé par `www/contact.php` à l'adresse « E-mail qui reçoit les messages » de l'administration (Apparence › Coordonnées), ou à `CONTACT_TO` si elle figure dans `.env`. Sans réglage SMTP, la fonction `mail()` d'OVH est utilisée ; un serveur SMTP peut être indiqué dans `.env` (voir `.env.example`).
 
 ## Référencement (Google)
 
 - Titre, description, lien canonique, données structurées (Organisation + Site web), `robots.txt` et `sitemap.xml` sont produits automatiquement à partir du contenu.
 - Dans l'administration (Apparence › « Moteurs de recherche ») : **Adresse du site** (lien canonique et sitemap), **code de vérification Google Search Console**, case « Version de présentation » (à laisser décochée pour être visible sur Google), **ville ou zone d'intervention** (indispensable pour les recherches locales).
-- À faire une fois : relier le domaine avenirdurable.fr au site (GitHub › Settings › Pages › Custom domain, ou hébergement OVH), puis changer l'« Adresse du site » ; déclarer le site dans Google Search Console et y envoyer `sitemap.xml` ; créer une fiche Google Business Profile.
+- À faire une fois : déclarer https://avenirdurable.fr dans Google Search Console et y envoyer `sitemap.xml` ; créer une fiche Google Business Profile.
 
 ## Tests automatiques
 
-`bash tests/lancer-tests.sh` (Linux, macOS ou WSL ; PHP, Node.js, Python 3 et Playwright requis) lance 30 vérifications sur une copie temporaire du site, avec un faux serveur d'e-mails : page publique et SEO, fenêtre de contact, envoi et protections de `contact.php`, fichiers privés, administration (connexion, mot de passe, publication), version GitHub Pages avec FormSubmit, affichage en 375, 768, 1366 et 1920 px, console du navigateur. Vos fichiers `.env` et vos données ne sont pas touchés.
+`bash tests/lancer-tests.sh` (Linux, macOS ou WSL ; PHP, Node.js, Python 3 et Playwright requis) lance une trentaine de vérifications sur une copie temporaire du site, avec un faux serveur d'e-mails : page publique et SEO, fenêtre de contact, envoi et protections de `contact.php`, fichiers privés, administration (connexion, mot de passe, publication), page de redirection GitHub Pages, affichage en 375, 768, 1366 et 1920 px, console du navigateur. Vos fichiers `.env` et vos données ne sont pas touchés.
 
 ## Contenus à valider avec l'association
 
@@ -105,10 +96,8 @@ www/                    site publié (ce qui part sur l'hébergement)
   robots.txt, sitemap.xml  générés (build.js et publication)
 tests/                  tests automatiques (lancer-tests.sh)
 build.js                régénère les pages de départ et les listes d'envoi
-ouvrir-le-site.html     ouvre le site public sans rien installer
 lancer-en-local.bat     lance le site et l'administration sur l'ordinateur (PHP)
 envoyer-sur-ovh.bat     envoie le site sur l'hébergement (SFTP)
-docs/RESEARCH.md        recherche sur l'association et sources
 ```
 
 L'ancienne version (Next.js et PostgreSQL) est conservée dans la branche `version-nextjs`.

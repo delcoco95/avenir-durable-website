@@ -3,7 +3,7 @@
     "title": "L'Avenir Durable · Ateliers de sensibilisation à l'environnement et au développement durable",
     "description": "Ateliers, animations nature et projets d'éducation à l'environnement pour les particuliers, les écoles, les entreprises et les collectivités : biodiversité, alimentation, zéro déchet, eau, énergie et climat.",
     "noindex": false,
-    "siteUrl": "https://delcoco95.github.io/avenir-durable-website/",
+    "siteUrl": "https://avenirdurable.fr/",
     "googleVerification": ""
   },
   "nav": {
@@ -427,11 +427,11 @@
   },
   "legal": {
     "title": "Mentions légales et confidentialité",
-    "updated": "2026-10-30",
+    "updated": "2026-11-08",
     "sections": [
       {
         "title": "Éditeur du site",
-        "text": "L'Avenir Durable\nProjet porté par Berthe Essombi Dissake\nSIRET : 931 031 371 00012\nForme juridique et adresse : [à compléter]\nTéléphone : 06 43 21 55 35\nE-mail : avenirdurable@ecomail.fr"
+        "text": "L'Avenir Durable\nProjet porté par Berthe Essombi Dissake\nSIRET : 931 031 371 00012\nForme juridique et adresse : [à compléter]\nTéléphone : 06 43 21 55 35\nE-mail : avenirdurable@ecomail.fr\nSite : https://avenirdurable.fr"
       },
       {
         "title": "Directrice de la publication",
@@ -439,7 +439,7 @@
       },
       {
         "title": "Hébergeur",
-        "text": "GitHub Pages, service de GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis (https://github.com).\n\nEn cas d'hébergement chez OVHcloud : OVH SAS, 2 rue Kellermann, 59100 Roubaix, France."
+        "text": "OVH SAS, 2 rue Kellermann, 59100 Roubaix, France. Téléphone : 1007 (depuis la France). Site : https://www.ovhcloud.com"
       },
       {
         "title": "Propriété intellectuelle et droit à l'image",
@@ -451,7 +451,7 @@
       },
       {
         "title": "Données personnelles",
-        "text": "Formulaire de contact : les informations que vous envoyez (nom, adresse e-mail, motif, objet et message) servent uniquement à répondre à votre demande, sur la base de votre consentement. Elles ne sont ni vendues ni transmises à des fins commerciales et sont conservées au maximum 3 ans après notre dernier échange.\n\nSelon l'hébergement, le message est transmis par le serveur du site ou par le service FormSubmit (https://formsubmit.co), qui l'achemine jusqu'à notre boîte e-mail.\n\nResponsable du traitement : L'Avenir Durable (Berthe Essombi Dissake), joignable à avenirdurable@ecomail.fr.\n\nSécurité de l'espace d'administration : pour protéger le site contre les intrusions, la date, l'adresse IP et le navigateur utilisés lors des connexions à l'espace d'administration sont enregistrés (intérêt légitime : sécurité du site). Ces informations sont conservées au maximum 6 mois. L'hébergeur conserve également des journaux techniques de connexion, selon ses propres obligations légales.\n\nVous disposez d'un droit d'accès, de rectification, d'effacement, d'opposition, de limitation et de portabilité de vos données, ainsi que du droit de retirer votre consentement. Pour les exercer, écrivez à avenirdurable@ecomail.fr. Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL : https://www.cnil.fr"
+        "text": "Formulaire de contact : les informations que vous envoyez (nom, adresse e-mail, motif, objet et message) servent uniquement à répondre à votre demande, sur la base de votre consentement. Elles ne sont ni vendues ni transmises à des fins commerciales et sont conservées au maximum 3 ans après notre dernier échange.\n\nLe message est transmis par e-mail depuis le serveur du site (hébergé en France par OVHcloud) et n'est pas conservé sur le serveur.\n\nResponsable du traitement : L'Avenir Durable (Berthe Essombi Dissake), joignable à avenirdurable@ecomail.fr.\n\nSécurité de l'espace d'administration : pour protéger le site contre les intrusions, la date, l'adresse IP et le navigateur utilisés lors des connexions à l'espace d'administration sont enregistrés (intérêt légitime : sécurité du site). Ces informations sont conservées au maximum 6 mois. L'hébergeur conserve également des journaux techniques de connexion, selon ses propres obligations légales.\n\nVous disposez d'un droit d'accès, de rectification, d'effacement, d'opposition, de limitation et de portabilité de vos données, ainsi que du droit de retirer votre consentement. Pour les exercer, écrivez à avenirdurable@ecomail.fr. Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL : https://www.cnil.fr"
       },
       {
         "title": "Cookies",

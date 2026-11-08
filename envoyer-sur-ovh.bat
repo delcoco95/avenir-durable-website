@@ -4,21 +4,22 @@ setlocal
 cd /d "%~dp0"
 title Envoi du site L'Avenir Durable sur l'hebergement OVH
 
-rem ==== Hebergement OVH (espace client > Hebergements > onglet FTP-SSH) ====
-set "HOTE=A_RENSEIGNER"
-set "COMPTE=A_RENSEIGNER"
+rem ==== Hebergement OVH (espace client > Hebergements > avenina > onglet FTP-SSH) ====
+set "HOTE=ssh.cluster129.hosting.ovh.net"
+set "COMPTE=avenina"
 set "ADRESSE=https://avenirdurable.fr"
-rem ==========================================================================
+rem ==================================================================================
 
 echo.
 echo  ==============================================================
-echo   Envoi du site L'Avenir Durable (FTP chiffre)
+echo   Envoi du site L'Avenir Durable (connexion chiffree SFTP)
 echo  ==============================================================
 echo.
 
-if "%HOTE%"=="A_RENSEIGNER" (
-  echo  Ouvrez ce fichier avec le Bloc-notes et renseignez HOTE et COMPTE
-  echo  ^(serveur FTP et identifiant FTP de l'hebergement^). Voir README.md.
+where sftp >nul 2>nul
+if errorlevel 1 (
+  echo  L'outil "sftp" de Windows est introuvable.
+  echo  Parametres Windows ^> Applications ^> Fonctionnalites facultatives ^> ajouter "Client OpenSSH".
   echo.
   pause
   exit /b 1
@@ -28,6 +29,7 @@ if not exist "deploy\installation.txt" (
   pause
   exit /b 1
 )
+where node >nul 2>nul && node build.js >nul
 
 echo  Que voulez-vous faire ?
 echo.
@@ -36,30 +38,42 @@ echo   2 - Mise a jour du programme seulement (admin, styles, scripts, images du
 echo       sans toucher aux textes et photos modifies depuis l'administration
 echo.
 set /p CHOIX="  Votre choix (1 ou 2) : "
+
+echo.
+echo  Le mot de passe demande est celui du compte FTP "%COMPTE%" (OVHcloud, onglet FTP - SSH).
+echo  Rien ne s'affiche quand vous le tapez : c'est normal. Validez avec Entree.
+echo  A la toute premiere connexion, tapez  yes  pour accepter le serveur.
 echo.
 
-if "%CHOIX%"=="1" (
-  if not exist ".env" (
-    echo  Fichier .env introuvable dans ce dossier.
-    pause
-    exit /b 1
-  )
-  set "LISTE=deploy\installation.txt"
-) else if "%CHOIX%"=="2" (
-  set "LISTE=deploy\mise-a-jour.txt"
-) else (
-  echo  Choix non reconnu.
+if "%CHOIX%"=="1" goto installation
+if "%CHOIX%"=="2" goto miseajour
+echo  Choix non reconnu.
+pause
+exit /b 1
+
+:installation
+if not exist ".env" (
+  echo  Fichier .env introuvable dans ce dossier.
   pause
   exit /b 1
 )
+sftp %COMPTE%@%HOTE% < "deploy\installation.txt"
+goto fin
 
-powershell -NoProfile -ExecutionPolicy Bypass -File "outils\envoyer-ftp.ps1" -Hote "%HOTE%" -Compte "%COMPTE%" -Liste "%LISTE%"
-if errorlevel 1 (
-  echo.
-  echo  L'envoi a echoue. Verifiez le mot de passe FTP et votre connexion Internet, puis relancez.
-) else (
-  echo.
-  echo  Envoi termine. Ouvrez %ADRESSE%/admin/
-)
+:miseajour
+sftp %COMPTE%@%HOTE% < "deploy\mise-a-jour.txt"
+goto fin
+
+:fin
+echo.
+if errorlevel 1 goto echec
+echo  Envoi termine. Les messages "remote mkdir ... Failure" sont normaux : dossiers deja presents.
+echo  Ouvrez %ADRESSE%/admin/
+goto termine
+
+:echec
+echo  L'envoi a echoue. Verifiez le mot de passe FTP et votre connexion Internet, puis relancez.
+
+:termine
 echo.
 pause

@@ -47,6 +47,7 @@ function script(list, withEnv) {
   dirs.forEach(d => L.push('chmod 755 ' + d));
   list.forEach(f => L.push('chmod 644 ' + f));
   if (withEnv) L.push('put .env .env', 'chmod 600 .env');
+  if (withEnv) L.push('-rm www/index.html'); // page « Site en construction » d'OVH
   L.push('bye');
   return L.join('\n') + '\n';
 }

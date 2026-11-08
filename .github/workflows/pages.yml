@@ -1,6 +1,5 @@
-# Publie le site public (dossier www) sur la branche gh-pages, servie par GitHub Pages,
-# à chaque envoi sur main. GitHub Pages n'exécute pas PHP : l'administration n'y est pas publiée
-# (elle fonctionne chez un hébergeur PHP ou en local avec lancer-en-local.bat).
+# Ancienne adresse GitHub Pages : publie une page qui renvoie vers https://avenirdurable.fr (site hébergé chez OVHcloud),
+# à chaque envoi sur main.
 name: GitHub Pages
 
 on:
@@ -20,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Préparer le site statique
+      - name: Préparer la page de redirection
         run: bash outils/preparer-github-pages.sh _site
       - name: Envoyer sur la branche gh-pages
         run: |

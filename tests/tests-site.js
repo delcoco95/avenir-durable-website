@@ -1,7 +1,7 @@
 /*
  * Tests automatiques du site (Playwright). Lancés par tests/lancer-tests.sh, qui prépare :
  *  - une copie du site servie par PHP (BASE), avec un .env de test et un faux serveur SMTP (MAILS = fichier des messages reçus) ;
- *  - la copie statique GitHub Pages (PAGES), servie sans PHP.
+ *  - la page de redirection de l'ancienne adresse GitHub Pages (PAGES).
  * Usage : node tests/tests-site.js BASE MAILS PAGES DOSSIER_CAPTURES
  */
 const { chromium } = require('playwright');
@@ -33,7 +33,7 @@ const motif = p => p.evaluate(() => { const r = document.querySelector('#contact
   await t('titre, description, canonique et indexation', async () => {
     ok(/sensibilisation à l.environnement/i.test(await page.title()), 'titre');
     ok((await page.getAttribute('meta[name=description]', 'content')).length > 120, 'description');
-    ok(await page.getAttribute('link[rel=canonical]', 'href'), 'canonique');
+    ok(await page.getAttribute('link[rel=canonical]', 'href') === 'https://avenirdurable.fr/', 'canonique');
     ok(await page.getAttribute('meta[property="og:url"]', 'content'), 'og:url');
     ok(!(await page.$('meta[name=robots]')), 'la page ne doit pas être en noindex');
   });
@@ -76,7 +76,7 @@ const motif = p => p.evaluate(() => { const r = document.querySelector('#contact
     await page.click('.menu-cta a');
     await page.waitForSelector('#contact-modal[open]');
     ok(await motif(page) === '', 'aucun motif coché');
-    ok(await page.evaluate(() => document.activeElement.name) === 'motif-choix', 'focus sur le motif');
+    ok(await page.waitForFunction(() => document.activeElement && document.activeElement.name === 'motif-choix', null, { timeout: 2000 }).then(() => true, () => false), 'focus sur le motif');
     await page.keyboard.press('Escape');
     await page.waitForSelector('#contact-modal:not([open])', { state: 'attached' });
   });
@@ -84,7 +84,7 @@ const motif = p => p.evaluate(() => { const r = document.querySelector('#contact
     await page.click('#participer .btn');
     await page.waitForSelector('#contact-modal[open]');
     ok(await motif(page) === 'atelier');
-    ok(await page.evaluate(() => document.activeElement.id) === 'cm-nom', 'focus sur le nom');
+    ok(await page.waitForFunction(() => document.activeElement && document.activeElement.id === 'cm-nom', null, { timeout: 2000 }).then(() => true, () => false), 'focus sur le nom');
     await page.click('#contact-modal .cm-close');
   });
   await t('section Contact : 2 boutons, motif choisi dans la fenêtre, fermeture en cliquant à côté', async () => {
@@ -291,38 +291,12 @@ const motif = p => p.evaluate(() => { const r = document.querySelector('#contact
     await a.close();
   });
 
-  console.log('\nVersion GitHub Pages (sans PHP)');
-  await t('pas de contact.php ni d’api.php ; page d’administration explicative', async () => {
-    ok((await ctx.request.get(PAGES + '/contact.php')).status() === 404, 'contact.php');
-    ok((await ctx.request.get(PAGES + '/admin/api.php')).status() === 404, 'api.php publié !');
-    const p = await browser.newPage();
-    await p.goto(PAGES + '/', { waitUntil: 'load' });
-    await p.click('footer .admin-link');
-    await p.waitForSelector('#pw-error:not([hidden])');
-    ok(/lancer-en-local\.bat/.test(await p.textContent('#login-intro')), 'explication');
-    ok(await p.isDisabled('#pw-btn'), 'connexion désactivée');
-    await p.close();
-  });
-  await t('formulaire envoyé à FormSubmit quand PHP est absent', async () => {
-    const p = await browser.newPage();
-    let sent = null;
-    await p.route('https://formsubmit.co/**', async route => {
-      sent = { url: route.request().url(), body: JSON.parse(route.request().postData()) };
-      await route.fulfill({ status: 200, contentType: 'application/json', headers: { 'Access-Control-Allow-Origin': '*' }, body: '{"success":"true","message":"ok"}' });
-    });
-    await p.goto(PAGES + '/', { waitUntil: 'networkidle' });
-    await p.click('#participer .btn');
-    await p.waitForSelector('#contact-modal[open]');
-    await p.fill('#cm-nom', 'Dominique Pages');
-    await p.fill('#cm-email', 'dom@example.org');
-    await p.fill('#cm-objet', 'Question depuis GitHub Pages');
-    await p.fill('#cm-message', 'Bonjour, ceci est un message de test.');
-    await p.check('#cm-consent');
-    await p.click('[data-cm-send]');
-    await p.waitForSelector('.cm-done:not([hidden])', { timeout: 15000 });
-    ok(sent && /formsubmit\.co\/ajax\/avenirdurable%40ecomail\.fr$/.test(sent.url), 'adresse FormSubmit : ' + (sent && sent.url));
-    ok(sent.body.Motif === 'Participer à un atelier' && sent.body._honey === '' && sent.body.email === 'dom@example.org', 'contenu');
-    await p.close();
+  console.log('\nAncienne adresse GitHub Pages');
+  await t('la page GitHub Pages renvoie vers avenirdurable.fr', async () => {
+    const html = await (await ctx.request.get(PAGES + '/')).text();
+    ok(/http-equiv="refresh" content="0; url=https:\/\/avenirdurable\.fr\/"/.test(html), 'redirection');
+    ok(/rel="canonical" href="https:\/\/avenirdurable\.fr\/"/.test(html), 'canonique');
+    ok((await ctx.request.get(PAGES + '/admin/api.php')).status() === 404, 'aucun fichier du site publié');
   });
 
   await t('aucune erreur dans la console du navigateur', async () => {

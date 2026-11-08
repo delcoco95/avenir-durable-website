@@ -118,7 +118,7 @@
 
   /* ---------- Formulaire de contact (fenêtre modale) ----------
    * Les boutons qui pointent vers #contact (motif à choisir), #contact-atelier ou #contact-partenariat (motif déjà coché) ouvrent la fenêtre.
-   * Envoi : contact.php sur un hébergement PHP (OVH, local) ; sur GitHub Pages (sans PHP), service FormSubmit. */
+   * Envoi : contact.php (hébergement OVH ou serveur local). */
   var REASONS = [
     ['question', 'Question', 'Sur le projet, les thèmes ou les formats', 'Votre question sur le projet, les thèmes ou les formats.', 'Ex. : Les ateliers sont-ils ouverts aux familles ?'],
     ['atelier', 'Participer à un atelier', 'Particulier, école, entreprise, collectivité', 'Précisez votre ville, le public concerné (enfants, classe, adultes, salariés…), le nombre de personnes et vos disponibilités.', 'Ex. : Atelier zéro déchet pour une classe de CE2'],
@@ -126,7 +126,7 @@
   ];
   var HASH_REASON = { '#contact': '', '#contact-question': 'question', '#contact-atelier': 'atelier', '#contact-partenariat': 'partenariat' };
   var contactEmail = document.body.getAttribute('data-contact') || '';
-  var dlg = null, mode = null, token = '', openedAt = 0, lastTrigger = null, prep = Promise.resolve();
+  var dlg = null, token = '', openedAt = 0, lastTrigger = null, prep = Promise.resolve();
   var MIN_DELAY = 3000, LIMIT = 3, LIMIT_WINDOW = 10 * 60 * 1000;
 
   function el(tag, attrs, html) {
@@ -209,17 +209,16 @@
   function fallbackText() {
     return contactEmail ? ' Vous pouvez aussi nous écrire directement : <b>' + escHtml(contactEmail) + '</b>.' : '';
   }
-  /* Choix du mode d'envoi : contact.php s'il répond (hébergement PHP), sinon FormSubmit */
+  /* Jeton signé demandé à contact.php à l'ouverture de la fenêtre (protection contre les robots) */
   function prepare() {
     token = '';
-    if (/\.github\.io$/i.test(location.hostname) || location.protocol === 'file:') { mode = 'formsubmit'; return Promise.resolve(); }
     return fetch('contact.php', { cache: 'no-store', credentials: 'same-origin' }).then(function (r) {
       var ct = r.headers.get('content-type') || '';
       if (!r.ok || ct.indexOf('json') < 0) throw new Error('no-php');
       return r.json();
     }).then(function (j) {
-      if (j && j.ok && j.token) { mode = 'php'; token = j.token; } else throw new Error('no-php');
-    }).catch(function () { mode = 'formsubmit'; });
+      if (j && j.ok && j.token) token = j.token; else throw new Error('no-php');
+    }).catch(function () { token = ''; });
   }
   function recentSends() {
     try { return (JSON.parse(localStorage.getItem('avenir_contact') || '[]') || []).filter(function (t) { return Date.now() - t < LIMIT_WINDOW; }); } catch (e) { return []; }
@@ -261,13 +260,12 @@
     sending = true; btn.disabled = true; status('Envoi en cours…');
     prep.then(function () { return request(v, reasonLabel); }).then(function () { remember(); done(); }).catch(function (e) {
       status(escHtml(e && e.message && e.message !== 'Failed to fetch' ? e.message : 'Connexion impossible. Vérifiez votre connexion internet puis réessayez.') + fallbackText(), true);
-      if (mode === 'php') prep = prepare(); // nouveau jeton pour un nouvel essai
+      prep = prepare(); // nouveau jeton pour un nouvel essai
     }).then(function () { sending = false; btn.disabled = false; });
   }
   function request(v, reasonLabel) {
-    var req;
-    if (mode === 'php') {
-      req = fetch('contact.php', {
+    if (!token) return Promise.reject(new Error('Le formulaire est momentanément indisponible.'));
+    return fetch('contact.php', {
         method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({ nom: v('nom'), email: v('email'), motif: v('motif'), objet: v('objet'), message: v('message'), consentement: field('consentement').checked, site_web: field('site_web').value, token: token })
       }).then(function (r) { return r.json().catch(function () { return { ok: false }; }); }).then(function (j) {
@@ -275,17 +273,6 @@
         if (j && j.field && field(j.field)) { setErr(field(j.field), j.error); (j.field === 'motif' ? field('motif').querySelector('input') : field(j.field)).focus(); }
         throw new Error((j && j.error) || 'Le message n\'a pas pu être envoyé.');
       });
-    } else {
-      if (!contactEmail) req = Promise.reject(new Error('Adresse de réception absente.'));
-      else req = fetch('https://formsubmit.co/ajax/' + encodeURIComponent(contactEmail), {
-        method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ name: v('nom'), email: v('email'), Motif: reasonLabel, Objet: v('objet'), message: v('message'), _subject: '[Site] ' + reasonLabel + ' : ' + v('objet'), _replyto: v('email'), _template: 'table', _captcha: 'false', _honey: field('site_web').value })
-      }).then(function (r) { return r.json().catch(function () { return {}; }); }).then(function (j) {
-        if (j && (j.success === true || j.success === 'true')) return;
-        throw new Error('Le message n\'a pas pu être envoyé.');
-      });
-    }
-    return req;
   }
   function done() {
     ['nom', 'email', 'objet', 'message'].forEach(function (n) { field(n).value = ''; });

@@ -1,17 +1,28 @@
 #!/usr/bin/env bash
-# Prépare une copie statique du site pour GitHub Pages (sans l'administration PHP).
+# Le site est hébergé chez OVHcloud (https://avenirdurable.fr). L'ancienne adresse GitHub Pages
+# renvoie désormais chaque visiteur (et Google) vers la même page sur avenirdurable.fr.
 # Usage : bash outils/preparer-github-pages.sh _site
 set -euo pipefail
 OUT="${1:-_site}"
+SITE="https://avenirdurable.fr"
 rm -rf "$OUT" && mkdir -p "$OUT"
-cp -r www/. "$OUT"/
-# L'administration a besoin de PHP : la page est publiée (elle explique comment l'ouvrir en local), jamais le programme api.php
-rm -f "$OUT/admin/api.php"
-rm -rf "$OUT/admin/data"
-# Pas de PHP sur GitHub Pages : le formulaire de contact passe par FormSubmit (voir assets/site.js)
-rm -f "$OUT/contact.php"
-find "$OUT" -name '.htaccess' -delete
-cp "$OUT/accueil.html" "$OUT/index.html"
-[ -f "$OUT/mentions-legales.html" ] || cp "$OUT/mentions-legales-initial.html" "$OUT/mentions-legales.html"
+page() {
+cat <<HTML
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>L'Avenir Durable a déménagé</title>
+<link rel="canonical" href="$SITE/">
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="0; url=$SITE/">
+<script>location.replace('$SITE' + location.pathname.replace(/^\/avenir-durable-website/, '').replace(/^\/index\.html$/, '/') + location.search + location.hash);</script>
+</head>
+<body><p>Le site L'Avenir Durable est maintenant à l'adresse <a href="$SITE/">avenirdurable.fr</a>.</p></body>
+</html>
+HTML
+}
+page > "$OUT/index.html"
+page > "$OUT/404.html"
 touch "$OUT/.nojekyll"
-echo "Site statique prêt dans $OUT"
+echo "Page de redirection prête dans $OUT"

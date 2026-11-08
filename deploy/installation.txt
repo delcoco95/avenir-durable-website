@@ -152,4 +152,5 @@ chmod 644 www/robots.txt
 chmod 644 www/sitemap.xml
 put .env .env
 chmod 600 .env
+-rm www/index.html
 bye
